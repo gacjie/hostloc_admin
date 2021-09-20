@@ -1,0 +1,16 @@
+<div class="row layui-form-item {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
+        <label class="layui-form-label" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+        <div class="layui-input-inline">
+            <select class="form-control" id="{$form[type].name}" name="{$form[type].name}" {$form[type].extra_attr|default=''}>
+                <option value="">{$form[type].placeholder}</option>
+                {volist name="form[type].options" id="option"}
+                <option value="{$key}" {if ((string)$form[type].value == (string)$key)}selected{/if}>{$option}</option>
+                {/volist}
+            </select>
+        </div>
+        <div class="layui-form-mid layui-word-aux">
+            {notempty name="form[type].required"} *{/notempty}
+            {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
+        </div>
+</div>
+

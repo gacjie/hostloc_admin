@@ -1,0 +1,370 @@
+{extend name="layout/default" /}
+{block name="head"}
+<title>系统配置</title>
+<style>
+    .edit-form tr td input {
+        width: 100%;
+    }
+</style>
+{/block}
+{block name="content"}
+<div class="ok-body">
+    <form class="layui-form edit-form form-horizontal" method="POST"
+          action="{:url('general.config/edit')}">
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            {volist name="siteList" key="k" id="vo"}
+            <li class="{$vo.active?'layui-this':''}">
+                <a href="#{$vo.name}"></a>
+                {:__($vo.title)}
+            </li>
+            {/volist}
+        </ul>
+        <div class="layui-tab-content">
+            {volist name="siteList" key="index" id="vo"}
+                <div class="layui-tab-item {$index == 1?'layui-show':''}" id="{$vo.name}-form">
+                    <div class="layui-form-item">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th width="15%">{:__('Title')}</th>
+                                <th width="68%">{:__('Value')}</th>
+                                <th width="15%">{:__('Name')}</th>
+                                <th width="2%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $vo.list as $item}
+                            <div class="lay"></div>
+                            <tr>
+                                <td>{$item.title}</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-sm-8 col-xs-12">
+                                            {switch $item.type}
+                                            {case string}
+                                            <input {$item.extend_html|raw} type="text" name="row[{$item.name}]"
+                                                   value="{$item.value|htmlentities}" class="form-control"
+                                                   data-rule="{$item.rule}" data-tip="{$item.tip}"/>
+                                            {/case}
+                                            {case text}
+                                            <textarea {$item.extend_html} name="row[{$item.name}]"
+                                                      class="form-control" data-rule="{$item.rule}" rows="5"
+                                                      data-tip="{$item.tip}">{$item.value|htmlentities}</textarea>
+                                            {/case}
+                                            {case editor}
+                                            <textarea {$item.extend_html} name="row[{$item.name}]"
+                                                      id="editor-{$item.name}" class="form-control editor"
+                                                      data-rule="{$item.rule}" rows="5"
+                                                      data-tip="{$item.tip}">{$item.value|htmlentities}</textarea>
+                                            {/case}
+                                            {case array}
+                                            <dl {$item.extend_html} class="fieldlist" data-name="row[{$item.name}]">
+                                                <dd>
+                                                    <ins>
+                                                        {:isset($item["setting"]["key"])&&$item["setting"]["key"]?$item["setting"]["key"]:__('Array
+                                                        key')}
+                                                    </ins>
+                                                    <ins>
+                                                        {:isset($item["setting"]["value"])&&$item["setting"]["value"]?$item["setting"]["value"]:__('Array
+                                                        value')}
+                                                    </ins>
+                                                </dd>
+                                                <dd><a href="javascript:;"
+                                                       class="btn btn-sm btn-success btn-append"><i
+                                                                class="fa fa-plus"></i> {:__('Append')}</a></dd>
+                                                <textarea name="row[{$item.name}]" class="form-control hide"
+                                                          cols="30" rows="5">{$item.value|htmlentities}</textarea>
+                                            </dl>
+                                            {/case}
+                                            {case date}
+                                            <input {$item.extend_html} type="text" name="row[{$item.name}]"
+                                                   value="{$item.value|htmlentities}"
+                                                   class="form-control datetimepicker" data-date-format="YYYY-MM-DD"
+                                                   data-tip="{$item.tip}" data-rule="{$item.rule}" />
+                                            {/case}
+                                            {case time}
+                                            <input {$item.extend_html} type="text" name="row[{$item.name}]"
+                                                   value="{$item.value|htmlentities}"
+                                                   class="form-control datetimepicker" data-date-format="HH:mm:ss"
+                                                   data-tip="{$item.tip}" data-rule="{$item.rule}" />
+                                            {/case}
+                                            {case datetime}
+                                            <input {$item.extend_html} type="text" name="row[{$item.name}]"
+                                                   value="{$item.value|htmlentities}"
+                                                   class="form-control datetimepicker"
+                                                   data-date-format="YYYY-MM-DD HH:mm:ss" data-tip="{$item.tip}"
+                                                   data-rule="{$item.rule}" />
+                                            {/case}
+                                            {case datetimerange}
+                                            <input {$item.extend_html} type="text" name="row[{$item.name}]"
+                                                   value="{$item.value|htmlentities}"
+                                                   class="form-control datetimerange" data-tip="{$item.tip}"
+                                                   data-rule="{$item.rule}" />
+                                            {/case}
+                                            {case number}
+                                            <input {$item.extend_html} type="number" name="row[{$item.name}]"
+                                                   value="{$item.value|htmlentities}" class="form-control"
+                                                   data-tip="{$item.tip}" data-rule="{$item.rule}" />
+                                            {/case}
+                                            {case checkbox}
+                                            <div class="checkbox">
+                                                {foreach name="item.content" item="vo"}
+                                                <input
+                                                        id="row[{$item.name}][]-{$key}" name="row[{$item.name}][]"
+                                                        type="checkbox" value="{$key}" data-tip="{$item.tip}" title="{$vo}" {in
+                                                        name="key" value="$item.value" }checked{/in} />
+                                                {/foreach}
+                                            </div>
+                                            {/case}
+                                            {case radio}
+                                            <div class="radio">
+                                                {foreach name="item.content" item="vo"}
+                                                <input id="row[{$item.name}]-{$key}" name="row[{$item.name}]"
+                                                       type="radio" value="{$key}" data-tip="{$item.tip}" title="{$vo}" {in
+                                                       name="key" value="$item.value" }checked{/in} />
+                                                {/foreach}
+                                            </div>
+                                            {/case}
+                                            {case value="select" break="0"}{/case}
+                                            {case value="selects"}
+                                            <select {$item.extend_html}
+                                                    name="row[{$item.name}]{$item.type=='selects'?'[]':''}"
+                                                    class="form-control selectpicker" data-tip="{$item.tip}"
+                                                    {$item.type=='selects' ?'multiple':''}>
+                                            {foreach name="item.content" item="vo"}
+                                            <option value="{$key}" {in name="key" value="$item.value" }selected{/in}>{$vo}</option>
+                                            {/foreach}
+                                            </select>
+                                            {/case}
+                                            {case value="image" break="0"}{/case}
+                                            {case value="images"}
+                                            <div class="form-inline">
+                                                <input id="c-{$item.name}" class="form-control" size="50"
+                                                       name="row[{$item.name}]" type="text"
+                                                       value="{$item.value|htmlentities}" data-tip="{$item.tip}">
+                                                <span><button type="button" id="faupload-{$item.name}"
+                                                              class="btn btn-danger faupload"
+                                                              data-input-id="c-{$item.name}" data-mimetype="image/*"
+                                                              data-multiple="{$item.type=='image'?'false':'true'}"
+                                                              data-preview-id="p-{$item.name}"><i
+                                                                class="fa fa-upload"></i>
+                                                            {:__('Upload')}</button></span>
+                                                <span><button type="button" id="fachoose-{$item.name}"
+                                                              class="btn btn-primary fachoose"
+                                                              data-input-id="c-{$item.name}" data-mimetype="image/*"
+                                                              data-multiple="{$item.type=='image'?'false':'true'}"><i
+                                                                class="fa fa-list"></i>
+                                                            {:__('Choose')}</button></span>
+                                                <span class="msg-box n-right" for="c-{$item.name}"></span>
+                                                <ul class="row list-inline faupload-preview" id="p-{$item.name}">
+                                                </ul>
+                                            </div>
+                                            {/case}
+                                            {case value="file" break="0"}{/case}
+                                            {case value="files"}
+                                            <div class="form-inline">
+                                                <input id="c-{$item.name}" class="form-control" size="50"
+                                                       name="row[{$item.name}]" type="text"
+                                                       value="{$item.value|htmlentities}" data-tip="{$item.tip}">
+                                                <span><button type="button" id="faupload-{$item.name}"
+                                                              class="btn btn-danger faupload"
+                                                              data-input-id="c-{$item.name}"
+                                                              data-multiple="{$item.type=='file'?'false':'true'}"><i
+                                                                class="fa fa-upload"></i>
+                                                            {:__('Upload')}</button></span>
+                                                <span><button type="button" id="fachoose-{$item.name}"
+                                                              class="btn btn-primary fachoose"
+                                                              data-input-id="c-{$item.name}"
+                                                              data-multiple="{$item.type=='file'?'false':'true'}"><i
+                                                                class="fa fa-list"></i>
+                                                            {:__('Choose')}</button></span>
+                                                <span class="msg-box n-right" for="c-{$item.name}"></span>
+                                            </div>
+                                            {/case}
+                                            {case switch}
+                                            <input id="c-{$item.name}" name="row[{$item.name}]" type="hidden"
+                                                   value="{:$item.value?1:0}">
+                                            <a href="javascript:;" data-toggle="switcher" class="btn-switcher"
+                                               data-input-id="c-{$item.name}" data-yes="1" data-no="0">
+                                                <i
+                                                        class="fa fa-toggle-on text-success {if !$item.value}fa-flip-horizontal text-gray{/if} fa-2x"></i>
+                                            </a>
+                                            {/case}
+                                            {case bool}
+                                            <label for="row[{$item.name}]-yes"><input id="row[{$item.name}]-yes"
+                                                                                      name="row[{$item.name}]" type="radio" value="1"
+                                                                                      {$item.value?'checked':''} data-tip="{$item.tip}" />
+                                                {:__('Yes')}</label>
+                                            <label for="row[{$item.name}]-no"><input id="row[{$item.name}]-no"
+                                                                                     name="row[{$item.name}]" type="radio" value="0"
+                                                                                     {$item.value?'':'checked'} data-tip="{$item.tip}" />
+                                                {:__('No')}</label>
+                                            {/case}
+                                            {case city}
+                                            <div style="position:relative">
+                                                <input {$item.extend_html} type="text" name="row[{$item.name}]"
+                                                       id="c-{$item.name}" value="{$item.value|htmlentities}"
+                                                       class="form-control" data-toggle="city-picker"
+                                                       data-tip="{$item.tip}" data-rule="{$item.rule}" />
+                                            </div>
+                                            {/case}
+                                            {case value="selectpage" break="0"}{/case}
+                                            {case value="selectpages"}
+                                            <input {$item.extend_html} type="text" name="row[{$item.name}]"
+                                                   id="c-{$item.name}" value="{$item.value|htmlentities}"
+                                                   class="form-control selectpage"
+                                                   data-source="{:url('general/config/selectpage')}?id={$item.id}"
+                                                   data-primary-key="{$item.setting.primarykey}"
+                                                   data-field="{$item.setting.field}"
+                                                   data-multiple="{$item.type=='selectpage'?'false':'true'}"
+                                                   data-tip="{$item.tip}" data-rule="{$item.rule}" />
+                                            {/case}
+                                            {case custom}
+                                            {$item.extend_html}
+                                            {/case}
+                                            {/switch}
+                                        </div>
+                                        <div class="col-sm-4"></div>
+                                    </div>
+
+                                </td>
+                                <td>{php}echo "{\$site.". $item['name'] . "}";{/php}</td>
+                                <td>{if $item['id']>17}<a href="javascript:;" class="btn-delcfg text-muted"
+                                                          data-name="{$item.name}"><i class="fa fa-times"></i></a>{/if}
+                                </td>
+                            </tr>
+                            {/foreach}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="layui-row">
+                                        <button type="submit" class="btn btn-success btn-embossed layui-btn">{:__('OK')}</button>
+                                        <button type="button" class="layui-btn layui-btn-primary add-btn" style="margin-left: 10px;">{:__('新增')}</button>
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            {/volist}
+        </div>
+    </div>
+    </form>
+</div>
+
+<div id="add-content" class="" style="display: none;">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">{:__('配置组')}</label>
+            <div class="layui-input-block">
+                <select name="group" id="group" lay-verify="required">
+                    {volist name="siteList" key="k" id="vo"}
+                    <option value="{:__($vo.name)}">{:__($vo.title)}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">{:__('Title')}</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" id="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">{:__('Name')}</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" id="name" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">{:__('类型')}</label>
+            <div class="layui-input-block">
+                <select name="type" id="type" lay-verify="required" lay-filter="type-form">
+                    <option value="string">{:__('文本')}</option>
+                    <option value="text">{:__('文本域')}</option>
+                    <option value="checkbox">{:__('复选框')}</option>
+                    <option value="radio">{:__('单选框')}</option>
+                    <option value="select">{:__('下拉框')}</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" id="item-content" style="display: none;">
+            <label class="layui-form-label">{:__('选项(以英文逗号隔开)')}</label>
+            <div class="layui-input-block">
+                <textarea name="content" id="content" placeholder="{:__('请输入选项内容')}" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+
+{/block}
+{block name="scripts"}
+<!--js逻辑-->
+<script>
+    layui.use(["element", "jquery", "table", "form", "laydate", "okLayer", "okUtils", "okMock"], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let laydate = layui.laydate;
+        let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
+        let okMock = layui.okMock;
+        let $ = layui.jquery;
+        var element = layui.element;
+
+        okLoading.close($);
+
+        form.on("select(type-form)", function (data){
+            if (data.value == "checkbox" || data.value == "radio" || data.value == "select"){
+                $("#item-content").show();
+            }else{
+                $("#item-content").hide();
+            }
+        })
+        $(".add-btn").click(function () {
+            form.render();
+            layer.open({
+                type: 1,
+                title: "新增配置",
+                area:['50%','60%'],
+                content: $("#add-content"), //这里content是一个普通的String
+                btn: ['新增', '取消'],
+                btnAlign: 'c',
+                yes: function(index, layero){
+                    var parentIndex = index;
+
+                    $.post("{:url('general.config/add')}", {
+                        group: $("#group").val(),
+                        title: $("#title").val(),
+                        name: $("#name").val(),
+                        type: $("#type").val(),
+                        content: $("#content").val(),
+                    }, function(result) {
+                       if (result.status == 1){
+                         layer.alert("新增成功", {icon:1, title:"提示"}, function (i){
+                             layer.close(i);
+                             layer.close(parentIndex);
+                             window.location.reload();
+                         });
+                       }else {
+                           layer.alert(result.msg, {icon:2, title:"提示"}, function (i){
+                               layer.close(i);
+                           })
+                       }
+                    }, "json");
+                },
+                cancel: function(){
+                    return true;
+                }
+            });
+        });
+    })
+
+
+</script>
+{/block}

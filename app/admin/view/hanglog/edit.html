@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="草莓快速开发框架" />
+    <meta name="description" content="草莓快速开发框架 thinkphp6开源版" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="renderer" content="webkit">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/static/css/oksub.css">
+    <link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon" />
+    <script src="{:url('ajax/lang',['controllername'=>1,'lang'=>'zh-cn'])}"></script>
+
+
+    <script>
+        window.urls = {
+            getUploadFiles: "{:url('upload/getUploadFiles')}",
+            uploadEditor: "{:url('upload/uploadEditor')}",
+            uploadfile: "{:url('upload/uploadfile')}",
+        }
+    </script>
+    <style>
+        .layui-upload-list img {
+            height: 100px;
+            width: 100px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/static/lib/loading/okLoading.css" />
+    <script type="text/javascript" src="/static/js/okconfig.js"></script>
+
+    <script type="text/javascript" src="/static/lib/loading/okLoading.js"></script>
+    <script src="/static/lib/layui/layui.js"></script>
+</head>
+
+</html>
+{block name="head"}
+	{if isset($hanglog)}
+    <title>{:__('Edit')}</title>
+    {else/}
+    <title>{:__('Add')}</title>
+    {/if}
+{/block}
+{block name="content"}
+<div class="ok-body">
+	<!--form表单-->
+	<form class="layui-form layui-form-pane ok-form">
+	    
+                    {if $hanglog.id??null}
+                    <input type="hidden" name="id" placeholder="" autocomplete="off" class="layui-input" value="{$hanglog.id??''}">
+                    {/if}
+                      <div class="layui-form-item">
+            <label class="layui-form-label">{:__("Hostloc_id")}</label>
+            <div class="layui-input-block">
+                <select name="hostloc_id" lay-verify="required">
+                    <option value="">{:__('Select')}</option>
+                    {foreach $hostlocs as $key=>$vo } 
+                        {if isset($hanglog.hostloc_id) && $hanglog.hostloc_id==$vo.id}}
+                        <option value="{$vo.id}" selected>{$vo.name}</option>
+                        {else/}
+                        <option value="{$vo.id}" >{$vo.name}</option>
+                        {/if}
+                    {/foreach}
+                </select>
+            </div>
+        </div>  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">{:__("Uptime")}</label>
+      <div class="layui-input-block">
+        <input type="text" name="uptime" id="uptime" autocomplete="off" class="layui-input" placeholder='yy-mm-dd HH:ii:ss' value="{$hanglog.uptime??date('Y-m-d H:i:s')}">
+      </div>
+    </div>
+  </div><div class="layui-form-item">
+                    <label class="layui-form-label">当前等级</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="grade" placeholder="{:__("Grade")}" autocomplete="off" class="layui-input"
+                               lay-verify="required" value="{$hanglog.grade??''}">
+                    </div>
+                </div><div class="layui-form-item">
+                    <label class="layui-form-label">当前积分</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="integral" placeholder="{:__("Integral")}" autocomplete="off" class="layui-input"
+                               lay-verify="required" value="{$hanglog.integral??''}">
+                    </div>
+                </div><div class="layui-form-item">
+                    <label class="layui-form-label">当前金钱</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="money" placeholder="{:__("Money")}" autocomplete="off" class="layui-input"
+                               lay-verify="required" value="{$hanglog.money??''}">
+                    </div>
+                </div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="add">{:__('Submit')}</button>
+				<button type="reset" class="layui-btn layui-btn-primary">{:__('Reset')}</button>
+			</div>
+		</div>
+	</form>
+</div>
+{/block}
+{block name="scripts"}
+<script src="/static/js/upload.js" charset="utf-8"></script>
+
+<script>
+
+	//设置插件路径
+	layui.config({
+            base: "../../static/lib/"
+    })
+	//集成插件
+	.extend([])
+	//使用插件
+	.use(["form","okLayer","okUtils","laydate"], function () {
+		let form = layui.form;
+let okLayer = layui.okLayer;
+let okUtils = layui.okUtils;
+let laydate = layui.laydate;
+
+		
+  		let editorArr = {};
+		okLoading.close();
+        
+                //=============渲染字段挂机时间组件
+                laydate.render({ 
+                          elem: "#uptime"
+                          ,trigger:'click'
+                          ,type: 'datetime'
+                        });
+
+		form.on("submit(add)", function (data) {
+			okUtils.ajax("", "post", data.field, true).done(function (response) {
+				//console.log(response);
+				if(response.code==1){
+					okLayer.greenTickMsg("编辑成功", function () {
+						parent.layer.close(parent.layer.getFrameIndex(window.name));
+					});
+				}else{
+					okLayer.greenTickMsg(response.msg, function () {
+				        
+				    })
+				}
+				
+			}).fail(function (error) {
+				console.log(error)
+			});
+			return false;
+		});
+	});
+</script>
+
+
+<script type="text/javascript" src="/static/lib/require.js"></script>
+<script type="text/javascript" src="/static/js/addons.js"></script>
+{/block}

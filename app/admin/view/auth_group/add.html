@@ -1,0 +1,173 @@
+{extend name="layout/default" /}
+
+
+{block name="head"}
+<title>添加</title>
+{/block}
+{block name="content"}
+<div class="ok-body">
+    <!--form表单-->
+    <form class="layui-form layui-form-pane ok-form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色组名</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色权限</label>
+            <div class="layui-input-block">
+                <div id="permissionTree"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="status" lay-skin="switch" lay-text="启用|停用" checked value="1">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <input type="text" name="remark" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="scripts"}
+<!--js逻辑-->
+<script src="/static/js/jquery.min.js"></script>
+<script>
+    //获取所有选中的节点id
+    function getCheckedId(data) {
+        var id = "";
+        $.each(data, function (index, item) {
+            if (id != "") {
+                id = id + "," + item.id;
+            } else {
+                id = item.id;
+            }
+            //item 没有children属性
+            if (item.children != null) {
+                var i = getCheckedId(item.children);
+                if (i != "") {
+                    id = id + "," + i;
+                }
+            }
+        });
+        return id;
+    }
+
+    layui.use(["element", "form", 'tree', "laydate", "okLayer", "okUtils"], function () {
+        let form = layui.form;
+        let laydate = layui.laydate;
+        let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
+        var tree = layui.tree;
+
+        okUtils.ajax("{:url('add')}", "get", {
+            id: 0,
+            getauth: 1
+        }, true).done(function (response) {
+            //console.log(response);
+            if (response.code == 1) {
+                response.data = response.data || [];
+                tree.render({
+                    elem: "#permissionTree",
+                    data: response.data,
+                    showCheckbox: true,
+                    id: 'nodeDataId',
+                });
+            } else {
+                okLayer.greenTickMsg(response.msg, function () {
+
+                })
+            }
+
+        }).fail(function (error) {
+            console.log(error)
+        });
+
+        okLoading.close();
+
+        //laydate.render({elem: "#birthday", type: "datetime"});
+
+        form.verify({
+
+        });
+
+        form.on("submit(add)", function (data) {
+            var checkedData = tree.getChecked('nodeDataId');
+            var nodeIds = '';
+            nodeIds = getCheckedId(checkedData);
+            var formdata = data.field;
+            formdata.rules = nodeIds;
+            okUtils.ajax("{:url('add')}", "post", formdata, true).done(function (response) {
+                //console.log(response);
+                if (response.code == 1) {
+                    okLayer.greenTickMsg("添加成功", function () {
+                        parent.layer.close(parent.layer.getFrameIndex(window.name));
+                    });
+                } else {
+                    okLayer.greenTickMsg(response.msg, function () {
+
+                    })
+                }
+
+            }).fail(function (error) {
+                console.log(error)
+            });
+            return false;
+        });
+    });
+</script>
+
+
+<script>
+    layui.use('upload', function () {
+        var $ = layui.jquery,
+            upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1',
+            url: '{:url("upload/index")}' //改成您自己的上传接口
+            ,
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            },
+            done: function (res) {
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                console.log(res);
+                //上传成功
+                $('input[name=avatar]').val(res.path);
+            },
+            error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+
+
+    });
+</script>
+{/block}

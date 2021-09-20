@@ -1,0 +1,23 @@
+<div class="row layui-form-item  {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
+        <label class="layui-form-label" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+        <div class="layui-input-inline">
+            {notempty name="form[type].group"}
+            <div class="input-group">
+            {/notempty}
+                {notempty name="form[type].group.0"}
+                <span class="input-group-addon">{$form[type].group.0|raw}</span>
+                {/notempty}
+                <input class="layui-input" type="text" id="{$form[type].name}" name="{$form[type].name}" value="{$form[type].value}" placeholder="{$form[type].placeholder}" {$form[type].extra_attr|raw}>
+                {notempty name="form[type].group.1"}
+                <span class="input-group-addon">{$form[type].group.1|raw}</span>
+                {/notempty}
+            {notempty name="form[type].group"}
+            </div>
+            {/notempty}
+        </div>
+        <div class="layui-form-mid layui-word-aux">
+            {notempty name="form[type].required"} *{/notempty}
+            {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
+        </div>
+</div>
+

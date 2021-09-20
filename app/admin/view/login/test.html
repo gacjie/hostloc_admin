@@ -1,0 +1,37 @@
+{extend name="layout/default" /}
+{block name="head"}
+
+<title>动态下拉demo</title>
+
+{/block}
+{block name="content"}
+<div class="ok-body">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>Layui动态下拉演示</legend>
+    </fieldset>
+
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">英雄选择</label>
+            <div class="layui-input-block">
+                <select name="role_id" lay-verify="required" data-select="{:url('login/test')}" data-key="user_id"
+                    data-fields="name" data-value="{$role_id}"></select>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="scripts"}
+
+<script>
+    layui.config({
+        base: '/static/lib/layui/extend/'
+    }).extend({
+        selectD: 'selectD/selectD'
+    }).use(['selectD'], function () {
+        var selectD = layui.selectD;
+        selectD.render();
+    });
+</script>
+
+{/block}

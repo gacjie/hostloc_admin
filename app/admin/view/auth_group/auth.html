@@ -1,0 +1,119 @@
+{extend name="layout/default" /}
+
+
+{block name="head"}
+<title>授权</title>
+<link rel="stylesheet" href="/static/lib/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+{/block}
+{block name="content"}
+<div class="ok-body">
+	<form method="post" name="myForm" id="myForm" action="" class="layui-form layui-form-pane ok-form">
+		<input type="hidden" name="id" value="{$id}">
+		<div class="layui-form-item">
+			<label class="layui-form-label">角色权限</label>
+			<div class="layui-input-block">
+				<div id="permissionTree"></div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+			</div>
+		</div>
+
+	</form>
+</div>
+{/block}
+{block name="scripts"}
+<!--js逻辑-->
+<!-- zTree 树节点组件 -->
+<script src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/lib/zTree/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="/static/lib/zTree/js/jquery.ztree.excheck.js"></script>
+
+
+<script>
+	//获取所有选中的节点id
+	function getCheckedId(data) {
+		var id = "";
+		$.each(data, function (index, item) {
+			if (id != "") {
+				id = id + "," + item.id;
+			}
+			else {
+				id = item.id;
+			}
+			//item 没有children属性
+			if (item.children != null) {
+				var i = getCheckedId(item.children);
+				if (i != "") {
+					id = id + "," + i;
+				}
+			}
+		});
+		return id;
+	}
+	layui.use(["element", "form", 'tree', "laydate", "okLayer", "okUtils"], function () {
+		let form = layui.form;
+		let laydate = layui.laydate;
+		let okLayer = layui.okLayer;
+		let okUtils = layui.okUtils;
+		var tree = layui.tree;
+
+
+		var id = $('input[name=id]').val();
+		okUtils.ajax("{:url('auth')}", "get", { id: id, getauth: 1 }, true).done(function (response) {
+			//console.log(response);
+			if (response.code == 1) {
+				response.data = response.data || [];
+				tree.render({
+					elem: "#permissionTree",
+					data: response.data,
+					showCheckbox: true,
+					id: 'nodeDataId',
+				});
+			} else {
+				okLayer.greenTickMsg(response.msg, function () {
+
+				})
+			}
+
+		}).fail(function (error) {
+			console.log(error)
+		});
+		okLoading.close();
+
+		//laydate.render({elem: "#birthday", type: "datetime"});
+
+		form.verify({
+
+		});
+
+		form.on("submit(add)", function (data) {
+			var checkedData = tree.getChecked('nodeDataId');
+			var nodeIds = new Array();
+			nodeIds = getCheckedId(checkedData);
+			//console.log(nodeIds);
+			var id = $('input[name=id]').val();
+
+			okUtils.ajax("{:url('auth')}", "post", { id: id, rules: nodeIds }, true).done(function (response) {
+				//console.log(response);
+				if (response.code == 1) {
+					okLayer.greenTickMsg("授权成功", function () {
+						parent.layer.close(parent.layer.getFrameIndex(window.name));
+					});
+				} else {
+					okLayer.greenTickMsg(response.msg, function () {
+
+					})
+				}
+
+			}).fail(function (error) {
+				console.log(error)
+			});
+			return false;
+		});
+	});
+</script>
+{/block}

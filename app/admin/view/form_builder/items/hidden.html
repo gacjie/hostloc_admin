@@ -1,0 +1,4 @@
+
+        <input type="hidden" name="{$form[type].name}" value="{$form[type].value|default=''}" id="{$form[type].name}" {$form[type].extra_attr|raw|default=''}>
+
+

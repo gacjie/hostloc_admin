@@ -1,0 +1,28 @@
+.fieldlist{
+    margin-left: 10px;
+}
+
+
+.fieldlist dd {
+    display: block;
+    margin: 5px 0;
+}
+
+.fieldlist dd input {
+    display: inline-block;
+    width: 300px;
+}
+
+.fieldlist dd input:first-child {
+    width: 110px;
+}
+
+.fieldlist dd ins {
+    width: 110px;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+}
+.field-move{
+    cursor: move;
+}

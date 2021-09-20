@@ -1,0 +1,12 @@
+<div class="row layui-form-item {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
+        <label class="layui-form-label" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+        <div class="layui-input-inline">
+                {volist name="form[type].options" id="option"}
+                    <input type="checkbox" name="{$form[type].name}[]" class="dd_radio" id="{$form[type].name}{$i}" value="{$key}" {in name="key" value="$form[type].value|default=''" }checked{/in} {$form[type].extra_attr|raw|default=''} title="{$option|raw|htmlspecialchars}">
+                {/volist}
+        </div>
+        <div class="layui-form-mid layui-word-aux">
+            {notempty name="form[type].required"} *{/notempty}
+            {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
+        </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="row layui-form-item {$form[type].extra_class|default=''}" id="form_group_{$form[type].name}">
+     <label class="layui-form-label" for="{$form[type].name}">{$form[type].title|htmlspecialchars}</label>
+        <div class="layui-input-inline">
+            <textarea class="layui-textarea" id="{$form[type].name}" name="{$form[type].name}" rows="3" placeholder="{$form[type].placeholder}" {$form[type].extra_attr|raw}>{$form[type].value}</textarea>
+        </div>
+        <div class="layui-form-mid layui-word-aux">
+            {notempty name="form[type].required"} *{/notempty}
+            {notempty name="form[type].tips"} {$form[type].tips|raw}{/notempty}
+        </div>
+</div>
