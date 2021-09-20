@@ -29,3 +29,5 @@ public/cmdatabase.sql
 public/install.php   
 未使用apache可删除以下文件   
 public/.htaccess   
+定时任务设置（每天访问一次）
+监控网址 http://域名/api/Crontab/index 
