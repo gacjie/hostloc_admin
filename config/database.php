@@ -24,11 +24,11 @@ return [
             // 服务器地址
             'hostname'          => Env::get('database.hostname', '127.0.0.1'),
             // 数据库名
-            'database'          => Env::get('database.database', 'loc_318760367_xy'),
+            'database'          => Env::get('database.database', 'hostloc_co'),
             // 用户名
-            'username'          => Env::get('database.username', 'loc_318760367_xy'),
+            'username'          => Env::get('database.username', 'hostloc_co'),
             // 密码
-            'password'          => Env::get('database.password', 'NckFrApsbbDzppXm'),
+            'password'          => Env::get('database.password', 'nBkakarmrdJTGpmA'),
             // 端口
             'hostport'          => Env::get('database.hostport', '3306'),
             // 数据库连接参数

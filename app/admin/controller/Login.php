@@ -11,18 +11,8 @@ class Login extends BaseController
 {
     public function index()
     {
-        //var_dump($this->request->isPost());exit();
-        /* if($this->request->isPost()){
-    		$this->error('111');
-    	} */
-        // if (Session::has('admin')) {
-        //     $this->error(__('You are logged'),  url('index/index'));
-        // }
-
-        //判断是否启用社会化登入
-        $social_login = whetherToUsePlugin('social_login')? true:false;
         // 模板输出
-        return View::fetch('', ['socail_login'=>$social_login]);
+        return View::fetch();
     }
     
     public function signin()
@@ -72,42 +62,5 @@ class Login extends BaseController
     {
         Session::delete('admin');
         return redirect('index');
-    }
-    
-    public function test()
-    {
-        if (!$this->request->isAjax()) {
-            $list = [
-                ['user_id' => 1, 'name' => '武则天'],
-                ['user_id' => 2, 'name' => '小乔'],
-                ['user_id' => 3, 'name' => '司马懿'],
-                ['user_id' => 4, 'name' => '妲己'],
-                ['user_id' => 5, 'name' => '张良'],
-            ];
-            $data = [
-                'code'  =>  1,
-                'msg'   =>  null,
-                'data'  =>  $list,
-            ];
-            return json($data);
-        }
-        View::assign('role_id', 3);
-        return View::fetch();
-    }
-
-    /**
-     * 调用方法demo 默认微信登入
-     * @param string $type 登入类型 'config/social.php 配置文件'  //'Qq', 'Weixin', 'Sina', 'Baidu', 'Gitee', 'Github', 'Google', 'Facebook', 'Taobao', 'Oschina', 'Douyin', 'Xiaomi', 'Dingtalk'
-     */
-    public function social_login($type='Weixin')
-    {
-        $type = input()['type'];
-        //钩子事件 短信插件
-        $plugin_name = 'Aaliyun';
-        Event::listen($plugin_name, 'addons\social_login\event\SocialLogin');
-        $hoddok_res = event($plugin_name, $type);
-//        var_dump($hoddok_res);
-
-        //登入成功 登入注册等用户信息业务逻辑
     }
 }

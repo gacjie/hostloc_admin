@@ -19,7 +19,7 @@ if (! is_file('./install.lock')) {
 }
 
 // 定义项目路径
-define('ADS_PATH', '../addons/');
+// define('ADS_PATH', '../addons/');
 
 require __DIR__ . '/../vendor/autoload.php';
 

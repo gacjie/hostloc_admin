@@ -21,7 +21,7 @@ $runtimeDir =  '..'.DS. 'runtime';
 
 function setAdminMap($adminMap){
     $content = <<<EOF
-    <?php return [
+<?php return [
         // 应用地址
         'app_host'         => env('app.host', ''),
         // 应用的命名空间

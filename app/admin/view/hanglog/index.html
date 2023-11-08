@@ -104,6 +104,14 @@
             </div>
         </div>
       
+
+        <div class="layui-inline">
+            <label class="layui-form-label">{:__('Status')}</label>
+            <div class="layui-input-inline">
+            <input type="text" name="status" id="status"  autocomplete="off" class="layui-input" placeholder="{:__('Status')}">
+            </div>
+        </div>
+      
                 <div class="layui-inline">
                     <button class="layui-btn layuiadmin-btn-useradmin" lay-submit="" lay-filter="search">
                         <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>{:__('Search')}
@@ -161,6 +169,7 @@ let laydate = layui.laydate;
 {field: 'grade', title: '{:__("Grade")}'},
 {field: 'integral', title: '{:__("Integral")}'},
 {field: 'money', title: '{:__("Money")}'},
+{field: 'status', title: '{:__("Status")}'},
 
                 {title: "{:__('Action')}",  align: "center", fixed: "right", templet: "#operationTpl"}
             ]],

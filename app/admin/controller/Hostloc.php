@@ -103,10 +103,45 @@ class Hostloc extends AdminBase
    public function add(){
 	   	if($this->request->isPost()){
 	   		$data = $this->request->post();
-            if (!isset($data['switch']))
-                            $data['switch'] = 'off';
-                            
-                
+	   		$site = config('site');
+	   		$HttpRequests = new \HttpRequests();
+	   		$userAgent = $HttpRequests->userAgent();
+	   		$headers = $HttpRequests->httpHeaders($userAgent,$this->rand_ip());
+	   		$suburl = $site['hostloc']."/member.php?mod=logging&action=login";
+            $loginInfo = array(
+                "username" => $data['name'],
+                "password" => $data['pass'],
+                "fastloginfield" => "username",
+                "quickforward" => "yes",
+                "handlekey" => "ls",
+                "loginsubmit" => true
+            );
+            $cookiefile = root_path().'/HttpRequests.cookie';
+            if(file_exists($cookiefile)){
+                unlink($cookiefile);
+            }
+            $login = $HttpRequests->httpPost($suburl,$loginInfo,$headers);
+            if(strpos($login, $data['name']) !== FALSE){
+                preg_match("/>用户组: (.*?)<\/a>/", $login, $preg);
+                $data['grade'] = $preg[1];
+            }else{
+                $this->error("登陆失败");
+            }
+            $html = $HttpRequests->httpPost($site['hostloc'].'/home.php?mod=spacecp&ac=credit&op=base',[],$headers);
+            preg_match("/积分: (\d+)<\/a>/", $html, $preg);
+            if(!empty($preg[1])){
+                $data['integral'] = $preg[1];
+            }else{
+                $data['integral'] = 0;
+            }
+            preg_match("/金钱: <\/em>(\d+)/", $html, $preg);
+            if(!empty($preg[1])){
+                $data['money'] = $preg[1];
+            }else{
+                $data['money'] = 0;
+            }
+            $data['uptime'] = 1;
+            $data['switch'] = 'on';
 	   		if( $this->model->save($data,false)){
 	   			$this->success(__('Add successful'));
 	   		}else{
@@ -186,7 +221,53 @@ $insert_data[$k]['switch'] = isset($v[6]) ? $v[6] : '';
 	   	View::assign('hostloc',$info);
         return View::fetch('edit');
    }
-
+   public function update(){
+   		$idsStr = $this->request->param('idsStr');
+   		if(!$idsStr){
+   			$this->success(__('Parameter error'));
+   		}
+   		$data =  Db::name('hostloc')->where('id', $idsStr)->find();
+   		$site = config('site');
+   		$HttpRequests = new \HttpRequests();
+   		$userAgent = $HttpRequests->userAgent();
+   		$headers = $HttpRequests->httpHeaders($userAgent,$this->rand_ip());
+   		$suburl = $site['hostloc']."/member.php?mod=logging&action=login";
+        $loginInfo = array(
+            "username" => $data['name'],
+            "password" => $data['pass'],
+            "fastloginfield" => "username",
+            "quickforward" => "yes",
+            "handlekey" => "ls",
+            "loginsubmit" => true
+        );
+        $cookiefile = root_path().'/HttpRequests.cookie';
+        if(file_exists($cookiefile)){
+            unlink($cookiefile);
+        }
+        $login = $HttpRequests->httpPost($suburl,$loginInfo,$headers);
+        // echo($login);var_dump($headers);var_dump($loginInfo);exit;
+        if(strpos($login, $data['name']) !== FALSE){
+            preg_match("/>用户组: (.*?)<\/a>/", $login, $preg);
+            $data['grade'] = $preg[1];
+        }else{
+            $this->error("登陆失败");
+        }
+        $html = $HttpRequests->httpPost($site['hostloc'].'/home.php?mod=spacecp&ac=credit&op=base',[],$headers);
+        preg_match("/积分: (\d+)<\/a>/", $html, $preg);
+        if(!empty($preg[1])){
+            $data['integral'] = (int)$preg[1];
+        }
+        preg_match("/金钱: <\/em>(\d+)/", $html, $preg);
+        if(!empty($preg[1])){
+            $data['money'] = (int)$preg[1];
+        }
+        unset($data['uptime'],$data['switch']);
+   		if( $this->model->find($data['id'])->update($data)){
+   			$this->success('数据更新成功');
+   		}else{
+   			$this->error('数据更新失败');
+   		}
+   }
    public function delete(){
    		$idsStr = $this->request->param('idsStr');
    		if(!$idsStr){
@@ -207,5 +288,7 @@ $insert_data[$k]['switch'] = isset($v[6]) ? $v[6] : '';
                  $this->error(__('Editor failed'));
             }
       }
-
+    function rand_ip(){
+        return rand(1,255).'.'.rand(1,255).'.'.rand(1,255).'.'.rand(1,255);
+    }
 }

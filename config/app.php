@@ -1,4 +1,4 @@
-    <?php return [
+<?php return [
         // 应用地址
         'app_host'         => env('app.host', ''),
         // 应用的命名空间
@@ -11,7 +11,7 @@
         'default_timezone' => 'Asia/Shanghai',
     
         // 应用映射（自动多应用模式有效）
-        'app_map'               => ['y5se5p04' => 'admin'],
+        'app_map'               => ['ztcev7j0' => 'admin'],
         // 域名绑定（自动多应用模式有效）
         'domain_bind'      => [],
         // 禁止URL访问的应用列表（自动多应用模式有效）

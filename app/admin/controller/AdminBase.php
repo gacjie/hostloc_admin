@@ -113,7 +113,6 @@ class AdminBase extends BaseController
                 'useragent'   => $_SERVER['HTTP_USER_AGENT'],
                 'create_time' => time(),
             ];
-            SystemLogService::instance()->save($data);
         }
         //var_dump($route);exit();
         $flag = false;

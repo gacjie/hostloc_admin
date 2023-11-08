@@ -70,37 +70,44 @@
                         <input type="text" name="pass" placeholder="{:__("Pass")}" autocomplete="off" class="layui-input"
                                lay-verify="required" value="{$hostloc.pass??''}">
                     </div>
-                </div><div class="layui-form-item">
+                </div>
+                {if isset($hostloc)}
+                <div class="layui-form-item">
                     <label class="layui-form-label">账号等级</label>
                     <div class="layui-input-block">
                         <input type="text" name="grade" placeholder="{:__("Grade")}" autocomplete="off" class="layui-input"
                                lay-verify="required" value="{$hostloc.grade??''}">
                     </div>
-                </div><div class="layui-form-item">
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">账号积分</label>
                     <div class="layui-input-block">
                         <input type="text" name="integral" placeholder="{:__("Integral")}" autocomplete="off" class="layui-input"
                                lay-verify="required" value="{$hostloc.integral??''}">
                     </div>
-                </div><div class="layui-form-item">
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">账号金钱</label>
                     <div class="layui-input-block">
                         <input type="text" name="money" placeholder="{:__("Money")}" autocomplete="off" class="layui-input"
                                lay-verify="required" value="{$hostloc.money??''}">
                     </div>
-                </div>  <div class="layui-form-item">
-    <div class="layui-inline">
-      <label class="layui-form-label">{:__("Uptime")}</label>
-      <div class="layui-input-block">
-        <input type="text" name="uptime" id="uptime" autocomplete="off" class="layui-input" placeholder='yy-mm-dd HH:ii:ss' value="{$hostloc.uptime??date('Y-m-d H:i:s')}">
-      </div>
-    </div>
-  </div>    <div class="layui-form-item">
-    <label class="layui-form-label">{:__("Switch")}</label>
-    <div class="layui-input-block">
-      <input type="checkbox" name="switch" lay-skin="switch" lay-text="{:__('Open')}|{:__('Close')}" {if isset($hostloc) && $hostloc.switch == 'on'}checked{/if}>
-    </div>
-  </div>
+                </div>  
+                <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">{:__("Uptime")}</label>
+                  <div class="layui-input-block">
+                    <input type="text" name="uptime" id="uptime" autocomplete="off" class="layui-input" placeholder='yy-mm-dd HH:ii:ss' value="{$hostloc.uptime??date('Y-m-d H:i:s')}">
+                  </div>
+                 </div>
+                 </div>    
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">{:__("Switch")}</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" name="switch" lay-skin="switch" lay-text="{:__('Open')}|{:__('Close')}" {if isset($hostloc) && $hostloc.switch == 'on'}checked{/if}>
+                    </div>
+                  </div>
+                {/if}
 		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<button class="layui-btn" lay-submit lay-filter="add">{:__('Submit')}</button>

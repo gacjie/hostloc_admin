@@ -86,16 +86,22 @@
                                lay-verify="required" value="{$hanglog.grade??''}">
                     </div>
                 </div><div class="layui-form-item">
-                    <label class="layui-form-label">当前积分</label>
+                    <label class="layui-form-label">获得积分</label>
                     <div class="layui-input-block">
                         <input type="text" name="integral" placeholder="{:__("Integral")}" autocomplete="off" class="layui-input"
                                lay-verify="required" value="{$hanglog.integral??''}">
                     </div>
                 </div><div class="layui-form-item">
-                    <label class="layui-form-label">当前金钱</label>
+                    <label class="layui-form-label">获得金钱</label>
                     <div class="layui-input-block">
                         <input type="text" name="money" placeholder="{:__("Money")}" autocomplete="off" class="layui-input"
                                lay-verify="required" value="{$hanglog.money??''}">
+                    </div>
+                </div><div class="layui-form-item">
+                    <label class="layui-form-label">挂机状态</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="status" placeholder="{:__("Status")}" autocomplete="off" class="layui-input"
+                               lay-verify="required" value="{$hanglog.status??''}">
                     </div>
                 </div>
 		<div class="layui-form-item">

@@ -77,6 +77,12 @@ class Hanglog extends AdminBase
                         $query->whereLike('money',"%{$money}%");
                     }
                     
+
+                    $status = $this->request->param('status',null);
+                    if($status){
+                        $query->whereLike('status',"%{$status}%");
+                    }
+                    
         })
 		   ->page($page,$limit)->select();
    		return json([
@@ -141,6 +147,7 @@ View::assign('hostlocs',$hostlocs);
 $insert_data[$k]['grade'] = isset($v[2]) ? $v[2] : '';
 $insert_data[$k]['integral'] = isset($v[3]) ? $v[3] : '';
 $insert_data[$k]['money'] = isset($v[4]) ? $v[4] : '';
+$insert_data[$k]['status'] = isset($v[5]) ? $v[5] : '';
 }
             }
 
