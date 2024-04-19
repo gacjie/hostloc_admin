@@ -5,7 +5,7 @@
 ![hostloc_admin.jpg](https://raw.githubusercontent.com/gacjie/hostloc_admin/main/hostloc_admin.png)    
 
 ##### 功能说明:    
-【账号管理】可以自由账号密码等信息，挂机时积分、金钱、等级可以手动自动更新。    
+【账号管理】可自动获取账号信息，挂机时积分、金钱、等级可以手动自动更新。    
 【账号开关】账号挂机时登陆错误，会自动关闭该账号状态，状态为off时，则不会执行挂机任务。    
 【设置官网】可自定义官网链接，避免官方在主域名与www子域名之间切换。     
 【虚拟地址】生成虚拟IP协议头发送给论坛     
@@ -25,7 +25,7 @@ https://gitee.com/gacjie/hostloc_admin
 2.设置public为运行目录，并取消防跨站。   
 3.修改runtime文件夹权限777    
 4.访问http://域名/install.php安装    
-按照完成后可删除以下文件。    
+安装完成后可删除以下文件。    
 public/database.sql    
 public/install.php    
 未使用apache可删除以下文件    

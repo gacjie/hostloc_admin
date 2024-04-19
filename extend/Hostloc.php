@@ -19,6 +19,8 @@ class Hostloc
     public $clientAPI="https://hostloc.com/";
 	//默认浏览器UA
   	public $userAgent = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1";
+  	//默认http请求头
+  	public $httpHeaders = [];
   	//COOKIE文件目录
   	public $cookiePath = "";
   	//COOKIE文件名称
@@ -64,8 +66,10 @@ class Hostloc
             "loginsubmit" => true
         ];
         $this->setoptArray[CURLOPT_POST] = true;
+        $this->httpHeaders["Content-Type"] = "Content-Type: application/x-www-form-urlencoded";
         $this->setoptArray[CURLOPT_POSTFIELDS] = http_build_query($data);
         $result = $this->requestsAPI("/member.php?mod=logging&action=login");
+        // echo($result);exit;
         if(strpos($result, $this->Account) !== FALSE){
             preg_match("/>用户组: (.*?)<\/a>/", $result, $preg);
             return ['status'=>true,'message'=>'登陆成功','data'=>['grade'=>$preg[1]]];
@@ -108,11 +112,8 @@ class Hostloc
      * @return string
      */
     function virtualAddress($address){
-        $this->setoptArray[CURLOPT_CUSTOMREQUEST] = "GET";
-        $this->setoptArray[CURLOPT_HTTPHEADER] = [
-                "X-FORWARDED-FOR: $address",
-                "HTTP_X_FORWARDED_FOR: $address"
-        ];
+        $this->httpHeaders["X-FORWARDED-FOR"] = "X-FORWARDED-FOR: $address";
+        $this->httpHeaders["HTTP_X_FORWARDED_FOR"] = "HTTP_X_FORWARDED_FOR: $address";
         return ['status'=>true,'message'=>'执行成功','data'=>[]];
     }
     /**
@@ -131,6 +132,7 @@ class Hostloc
         $this->setoptArray[CURLOPT_USERAGENT] = $this->userAgent;
         $this->setoptArray[CURLOPT_COOKIEFILE] = $cookiefile;
         $this->setoptArray[CURLOPT_COOKIEJAR] = $cookiefile;
+        $this->setoptArray[CURLOPT_HTTPHEADER] = array_values($this->httpHeaders);
         curl_setopt_array($curl, $this->setoptArray);
         
         $response = curl_exec($curl);
