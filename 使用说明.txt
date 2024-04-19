@@ -33,6 +33,6 @@ public/.htaccess
 
 挂机监控：
 本次更新URL监控任务改为更为php命令行执行。
-php /您的网站绝对目录/think cron
-例如 php /www/wwwroot/hostloc.com/think cron
+php /您的网站绝对目录/think task
+例如 php /www/wwwroot/hostloc.com/think task
 注意：每次执行计划任务，只对一个账号进行访问空间刷分操作，因此请根据你的账号数设置合理执行的时间。
