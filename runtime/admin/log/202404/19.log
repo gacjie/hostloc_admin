@@ -1,0 +1,71 @@
+[2024-04-19T15:01:52+08:00][sql] CONNECT:[ UseTime:0.002424s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:01:52+08:00][sql] SHOW FULL COLUMNS FROM `cm_admin` [ RunTime:0.004276s ]
+[2024-04-19T15:01:52+08:00][sql] SELECT * FROM `cm_admin` WHERE  `username` = 'admin' LIMIT 1 [ RunTime:0.002515s ]
+[2024-04-19T15:01:52+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_group` [ RunTime:0.003685s ]
+[2024-04-19T15:01:52+08:00][sql] SELECT `rules`,`title` FROM `cm_auth_group` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001815s ]
+[2024-04-19T15:01:54+08:00][sql] CONNECT:[ UseTime:0.001774s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:01:54+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.004035s ]
+[2024-04-19T15:01:54+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.002424s ]
+[2024-04-19T15:01:54+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.003162s ]
+[2024-04-19T15:01:54+08:00][sql] SHOW FULL COLUMNS FROM `cm_admin` [ RunTime:0.004485s ]
+[2024-04-19T15:01:54+08:00][sql] SELECT * FROM `cm_admin` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.002845s ]
+[2024-04-19T15:01:54+08:00][sql] CONNECT:[ UseTime:0.001617s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:01:54+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.003827s ]
+[2024-04-19T15:01:54+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.002587s ]
+[2024-04-19T15:01:54+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.002855s ]
+[2024-04-19T15:01:57+08:00][sql] CONNECT:[ UseTime:0.002241s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:01:57+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.004647s ]
+[2024-04-19T15:01:57+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.003856s ]
+[2024-04-19T15:01:57+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.003823s ]
+[2024-04-19T15:01:58+08:00][sql] CONNECT:[ UseTime:0.002185s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:01:58+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.005302s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.003113s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.003708s ]
+[2024-04-19T15:01:58+08:00][sql] SHOW FULL COLUMNS FROM `cm_account` [ RunTime:0.005504s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT COUNT(*) AS think_count FROM `cm_account` [ RunTime:0.002199s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT * FROM `cm_account` ORDER BY `id` DESC LIMIT 0,20 [ RunTime:0.002572s ]
+[2024-04-19T15:01:58+08:00][sql] CONNECT:[ UseTime:0.002286s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:01:58+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.004846s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.005574s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.004455s ]
+[2024-04-19T15:01:58+08:00][sql] SHOW FULL COLUMNS FROM `cm_address` [ RunTime:0.004122s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT `id`,`name` FROM `cm_address` [ RunTime:0.001894s ]
+[2024-04-19T15:01:58+08:00][sql] CONNECT:[ UseTime:0.007104s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:01:58+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.006329s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.003624s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.002724s ]
+[2024-04-19T15:01:58+08:00][sql] SHOW FULL COLUMNS FROM `cm_user_agent` [ RunTime:0.003958s ]
+[2024-04-19T15:01:58+08:00][sql] SELECT `id`,`name` FROM `cm_user_agent` [ RunTime:0.002000s ]
+[2024-04-19T15:02:00+08:00][sql] CONNECT:[ UseTime:0.002009s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:02:00+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.005136s ]
+[2024-04-19T15:02:00+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.003214s ]
+[2024-04-19T15:02:00+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.004915s ]
+[2024-04-19T15:02:00+08:00][sql] SHOW FULL COLUMNS FROM `cm_address` [ RunTime:0.007011s ]
+[2024-04-19T15:02:00+08:00][sql] SELECT `id`,`name` FROM `cm_address` [ RunTime:0.002521s ]
+[2024-04-19T15:02:00+08:00][sql] SHOW FULL COLUMNS FROM `cm_user_agent` [ RunTime:0.005286s ]
+[2024-04-19T15:02:00+08:00][sql] SELECT `id`,`name` FROM `cm_user_agent` [ RunTime:0.002604s ]
+[2024-04-19T15:02:36+08:00][sql] CONNECT:[ UseTime:0.001478s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:02:36+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.003664s ]
+[2024-04-19T15:02:36+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.002143s ]
+[2024-04-19T15:02:36+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.002570s ]
+[2024-04-19T15:02:36+08:00][sql] SHOW FULL COLUMNS FROM `cm_account` [ RunTime:0.003629s ]
+[2024-04-19T15:02:36+08:00][sql] SELECT COUNT(*) AS think_count FROM `cm_account` [ RunTime:0.001482s ]
+[2024-04-19T15:02:36+08:00][sql] SELECT * FROM `cm_account` ORDER BY `id` DESC LIMIT 0,20 [ RunTime:0.001652s ]
+[2024-04-19T15:02:46+08:00][sql] CONNECT:[ UseTime:0.001434s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:02:46+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.003514s ]
+[2024-04-19T15:02:46+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.002107s ]
+[2024-04-19T15:02:46+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.002487s ]
+[2024-04-19T15:02:46+08:00][sql] CONNECT:[ UseTime:0.001498s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:02:46+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.003510s ]
+[2024-04-19T15:02:46+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.002130s ]
+[2024-04-19T15:02:46+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.002643s ]
+[2024-04-19T15:02:46+08:00][sql] SHOW FULL COLUMNS FROM `cm_admin` [ RunTime:0.003922s ]
+[2024-04-19T15:02:46+08:00][sql] SELECT * FROM `cm_admin` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.002018s ]
+[2024-04-19T15:02:46+08:00][sql] CONNECT:[ UseTime:0.001470s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:02:46+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.003597s ]
+[2024-04-19T15:02:46+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.002139s ]
+[2024-04-19T15:02:46+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.002525s ]
+[2024-04-19T15:02:51+08:00][sql] CONNECT:[ UseTime:0.001542s ] mysql:host=127.0.0.1;port=3306;dbname=hostloc_site;charset=utf8mb4
+[2024-04-19T15:02:51+08:00][sql] SHOW FULL COLUMNS FROM `cm_auth_rule` [ RunTime:0.003574s ]
+[2024-04-19T15:02:51+08:00][sql] SELECT * FROM `cm_auth_rule` [ RunTime:0.002116s ]
+[2024-04-19T15:02:51+08:00][sql] SELECT * FROM `cm_auth_rule` WHERE  `status` = 'normal'  AND `ismenu` = 1 ORDER BY `weigh` ASC [ RunTime:0.002528s ]

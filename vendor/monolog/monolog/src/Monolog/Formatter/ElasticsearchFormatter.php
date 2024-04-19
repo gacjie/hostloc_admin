@@ -11,7 +11,7 @@
 
 namespace Monolog\Formatter;
 
-use DateTimeInterface;
+use DateTime;
 
 /**
  * Format a log message into an Elasticsearch record
@@ -37,14 +37,14 @@ class ElasticsearchFormatter extends NormalizerFormatter
     public function __construct(string $index, string $type)
     {
         // Elasticsearch requires an ISO 8601 format date with optional millisecond precision.
-        parent::__construct(DateTimeInterface::ISO8601);
+        parent::__construct(DateTime::ISO8601);
 
         $this->index = $index;
         $this->type = $type;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function format(array $record)
     {
@@ -76,8 +76,8 @@ class ElasticsearchFormatter extends NormalizerFormatter
     /**
      * Convert a log message into an Elasticsearch record
      *
-     * @param  mixed[] $record Log message
-     * @return mixed[]
+     * @param  array $record Log message
+     * @return array
      */
     protected function getDocument(array $record): array
     {

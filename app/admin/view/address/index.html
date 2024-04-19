@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="草莓快速开发框架" />
+    <meta name="description" content="草莓快速开发框架 thinkphp6开源版" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="renderer" content="webkit">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/static/css/oksub.css">
+    <link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon" />
+    <script src="{:url('ajax/lang',['controllername'=>1,'lang'=>'zh-cn'])}"></script>
+
+
+    <script>
+        window.urls = {
+            getUploadFiles: "{:url('upload/getUploadFiles')}",
+            uploadEditor: "{:url('upload/uploadEditor')}",
+            uploadfile: "{:url('upload/uploadfile')}",
+        }
+    </script>
+    <style>
+        .layui-upload-list img {
+            height: 100px;
+            width: 100px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/static/lib/loading/okLoading.css" />
+    <script type="text/javascript" src="/static/js/okconfig.js"></script>
+
+    <script type="text/javascript" src="/static/lib/loading/okLoading.js"></script>
+    <script src="/static/lib/layui/layui.js"></script>
+</head>
+
+</html>
+{block name="head"}
+    <title>{:__('List')}</title>
+{/block}
+{block name="content"}
+<div class="ok-body">
+    <form class="layui-form" lay-filter="search-form">  
+
+        <div class="layui-card layui-form" style="border:1px solid #e6e6e6;padding-top:10px" >
+        <div class="layui-form-item" >
+                
+        <div class="layui-inline">
+            <label class="layui-form-label">{:__('Id')}</label>
+            <div class="layui-input-inline">
+            <input type="text" name="id" id="id"  autocomplete="off" class="layui-input" placeholder="{:__('Id')}">
+            </div>
+        </div>
+      
+
+        <div class="layui-inline">
+            <label class="layui-form-label">{:__('Name')}</label>
+            <div class="layui-input-inline">
+            <input type="text" name="name" id="name"  autocomplete="off" class="layui-input" placeholder="{:__('Name')}">
+            </div>
+        </div>
+      
+
+        <div class="layui-inline">
+            <label class="layui-form-label">{:__('Start')}</label>
+            <div class="layui-input-inline">
+            <input type="text" name="start" id="start"  autocomplete="off" class="layui-input" placeholder="{:__('Start')}">
+            </div>
+        </div>
+      
+
+        <div class="layui-inline">
+            <label class="layui-form-label">{:__('End')}</label>
+            <div class="layui-input-inline">
+            <input type="text" name="end" id="end"  autocomplete="off" class="layui-input" placeholder="{:__('End')}">
+            </div>
+        </div>
+      
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit="" lay-filter="search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>{:__('Search')}
+                    </button>
+                    <button type="reset" class="layui-btn layui-btn-primary icon-btn" type="reset">
+                                <i class="layui-icon layui-icon-refresh-3"></i>{:__('Reset')}
+                            </button>
+                </div>
+            </div>
+        </div>
+    </form>
+     <!--数据表格-->
+    <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
+</div>
+{/block}
+{block name="scripts"}
+
+<!--js逻辑-->
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script>
+    layui.use(["form","okLayer","upload","okUtils","table","jquery"], function () {
+        let form = layui.form;
+let okLayer = layui.okLayer;
+let upload = layui.upload;
+let okUtils = layui.okUtils;
+let table = layui.table;
+let $ = layui.jquery;
+
+        
+
+        okLoading.close($);
+        
+        let userTable = table.render({
+            elem: '#tableId',
+            url: 'index',
+            limit: 20,
+            page: true,
+            toolbar: true,
+            toolbar: "#toolbarTpl",
+            height:'full',
+            cellMinWidth: 120,
+            cols: [[
+                {type: "checkbox", fixed: "left"},
+                {field: 'id', title: '{:__("Id")}'},
+{field: 'name', title: '{:__("Name")}'},
+{field: 'start', title: '{:__("Start")}'},
+{field: 'end', title: '{:__("End")}'},
+
+                {title: "{:__('Action')}",  align: "center", fixed: "right", templet: "#operationTpl"}
+            ]],
+            done: function (res, curr, count) {
+                console.info(res, curr, count);
+            }
+        });
+
+        form.on("submit(search)", function (data) {
+            userTable.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
+        form.on("submit(reset)", function (data) {
+            userTable.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
+//监听开关事件
+        form.on('switch(stat)', function (data) {
+            var contexts;
+            var sta;
+            var x = data.elem.checked;//判断开关状态
+            if (x==true) {
+                contexts = "{:__('Open')}";
+                sta='on';
+            } else {
+                contexts = "{:__('Close')}";
+                sta='off';
+            }
+            //自定义弹窗
+            layer.open({
+                content:x==true? "{:__('Are you open')}":"{:__('Are you close')}"
+                , btn: ["{:__('OK')}", "{:__('Cancel')}"]
+                , yes: function (index, layero) {
+                    data.elem.checked = x;
+                    postData = {id:data.value};
+                    postData[data.elem.id] = sta;
+                    console.log(postData);
+                    $.post('sw', postData, function (data) {
+                    if (data == 1) {
+                        layer.msg(x==true? "{:__('Open successful')}":"{:__('Close successful')}",
+                            {icon: 1, time: 2000,});
+
+                                // 数据重载
+                             active.reload();
+                           }
+                     });
+
+                    form.render();
+                    layer.close(index);
+
+                }
+                , btn2: function (index, layero) {
+                    //按钮【按钮二】的回调
+                    data.elem.checked = !x;
+                    form.render();
+                    layer.close(index);
+                    //return false 开启该代码可禁止点击该按钮关闭
+                }
+                , cancel: function () {
+                    //右上角关闭回调
+                    data.elem.checked = !x;
+                    form.render();
+                    // return false; //开启该代码可禁止点击该按钮关闭
+                }
+            });
+
+            return false;
+
+        });
+        table.on("toolbar(tableFilter)", function (obj) {
+            switch (obj.event) {
+                case "batchEnabled":
+                    batchEnabled();
+                    break;
+                case "batchDisabled":
+                    batchDisabled();
+                    break;
+                case "batchDel":
+                    batchDel();
+                    break;
+                case "add":
+                    add();
+                    break;
+                case "leading":
+                    leading();
+                    break;
+            }
+        });
+
+        table.on("tool(tableFilter)", function (obj) {
+            let data = obj.data;
+            switch (obj.event) {
+                case "edit":
+                    edit(data);
+                    break;
+                case "del":
+                    del(data.id);
+                    break;
+            }
+        });
+        upExcel();
+        function upExcel() {
+                    upload.render({
+                        elem: '#leading' //绑定元素
+                        ,url: 'leading' //上传接口
+                        ,accept:'file'
+                        ,exts:'csv|xlsx'
+                        ,done: function(res){
+                            //上传完毕回调
+                            okLayer.greenTickMsg("导入成功", function () {
+                                userTable.reload();
+                                upExcel();
+                            });
+                        }
+                        ,error: function(){
+                            //请求异常回调
+                            console.log(error)
+                        }
+                    });
+                }
+        
+        function batchEnabled() {
+            okLayer.confirm("{:__('Are you sure you want to enable batches?')}", function (index) {
+                layer.close(index);
+                let idsStr = okUtils.tableBatchCheck(table);
+                if (idsStr) {
+                    okUtils.ajax("setNormal", "put", {idsStr: idsStr}, true).done(function (response) {
+                        if(response.code==1){
+                            console.log(response);
+                            okUtils.tableSuccessMsg(response.msg);
+                        }else{
+                            okLayer.greenTickMsg(response.msg, function () {
+
+                            })
+                        }
+                    }).fail(function (error) {
+                        console.log(error)
+                    });
+                }
+            });
+        }
+
+        function batchDisabled() {
+            okLayer.confirm("{:__('Are you sure you want to disable batches?')}", function (index) {
+                layer.close(index);
+                let idsStr = okUtils.tableBatchCheck(table);
+                if (idsStr) {
+                    okUtils.ajax("setStop", "put", {idsStr: idsStr}, true).done(function (response) {
+
+                        if(response.code==1){
+                            console.log(response);
+                            okUtils.tableSuccessMsg(response.msg);
+                        }else{
+                            okLayer.greenTickMsg(response.msg, function () {
+
+                            })
+                        }
+                    }).fail(function (error) {
+                        console.log(error)
+                    });
+                }
+            });
+        }
+
+        function batchDel() {
+            okLayer.confirm("{:__('Are you sure you want to delete batches?')}", function (index) {
+                layer.close(index);
+                let idsStr = okUtils.tableBatchCheck(table);
+                if (idsStr) {
+                    okUtils.ajax("delete", "delete", {idsStr: idsStr}, true).done(function (response) {
+                        //console.log(response);
+                        //okUtils.tableSuccessMsg(response.msg);
+                        if(response.code==1){
+                            console.log(response);
+                            okUtils.tableSuccessMsg(response.msg);
+                        }else{
+                            okLayer.greenTickMsg(response.msg, function () {
+
+                            })
+                        }
+                    }).fail(function (error) {
+                        console.log(error)
+                    });
+                }
+            });
+        }
+
+        function add() {
+            okLayer.open("{:__('Add')}", "add", "90%", "90%", null, function () {
+                userTable.reload();
+            })
+        }
+
+        function leading(){
+            okLayer.open("{:__('Import')}", "leading", "90%", "90%", null, function () {
+                userTable.reload();
+            })
+        }
+
+        function edit(data) {
+            okLayer.open("{:__('Edit')}", "edit?id="+data.id, "90%", "90%", function (layero) {
+                //let iframeWin = window[layero.find("iframe")[0]["name"]];
+                //iframeWin.initForm(data);
+            }, function () {
+                userTable.reload();
+            })
+        }
+
+        function del(id) {
+            okLayer.confirm("{:__('You sure you want to delete it?')}", function () {
+                okUtils.ajax("delete", "delete", {idsStr: id}, true).done(function (response) {
+
+
+                    if(response.code==1){
+                        console.log(response);
+                        okUtils.tableSuccessMsg(response.msg);
+                    }else{
+                        okLayer.greenTickMsg(response.msg, function () {
+
+                        })
+                    }
+
+                }).fail(function (error) {
+                    console.log(error)
+                });
+            })
+        }
+    })
+</script>
+<!-- 头工具栏模板 -->
+<script type="text/html" id="toolbarTpl">
+    <div class="layui-btn-container">
+        <!--		<button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="batchEnabled">{:__('Batche enable')}</button>-->
+        <!--		<button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="batchDisabled">{:__('Batche disable')}</button>-->
+        <!--		<button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchDel">{:__('Batche delete')}</button>-->
+        <button class="layui-btn layui-btn-sm" lay-event="add">{:__('Add')}</button>
+        <button class="layui-btn layui-btn-sm" id="leading">{:__('Import')}</button>
+    </div>
+</script>
+<!-- 行工具栏模板 -->
+<script type="text/html" id="operationTpl">
+    <a href="javascript:" title="{:__('Edit')}" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
+    <a href="javascript:" title="{:__('Delete')}" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+</script>
+
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status == 'normal'){ }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">{:__('Enable')}</span>
+    {{#  } else if(d.status != 'normal') { }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">{:__('Disable')}</span>
+    {{#  } }}
+</script>
+
+{/block}

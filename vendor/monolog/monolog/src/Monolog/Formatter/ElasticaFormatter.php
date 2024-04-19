@@ -17,8 +17,6 @@ use Elastica\Document;
  * Format a log message into an Elastica Document
  *
  * @author Jelle Vink <jelle.vink@gmail.com>
- *
- * @phpstan-import-type Record from \Monolog\Logger
  */
 class ElasticaFormatter extends NormalizerFormatter
 {
@@ -46,7 +44,7 @@ class ElasticaFormatter extends NormalizerFormatter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function format(array $record)
     {
@@ -65,21 +63,19 @@ class ElasticaFormatter extends NormalizerFormatter
      */
     public function getType(): string
     {
-        /** @phpstan-ignore-next-line */
         return $this->type;
     }
 
     /**
      * Convert a log message into an Elastica Document
-     *
-     * @phpstan-param Record $record
+     * @param  array    $record
+     * @return Document
      */
     protected function getDocument(array $record): Document
     {
         $document = new Document();
         $document->setData($record);
-        if (method_exists($document, 'setType')) {
-            /** @phpstan-ignore-next-line */
+        if(method_exists($document, 'setType')) {
             $document->setType($this->type);
         }
         $document->setIndex($this->index);

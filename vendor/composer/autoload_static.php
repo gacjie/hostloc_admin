@@ -4,24 +4,21 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8
+class ComposerStaticInitd2c0f859a9c43ab05c3776b61b5b192a
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
-        '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        '9810210ed49310e71ca0537189ea4d84' => __DIR__ . '/..' . '/ric/thinkphp6-helper/src/helper.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
-        'dc40c3a6c6714981d741e04977e2bd6a' => __DIR__ . '/..' . '/sent/think-jwt/src/helper.php',
         '841780ea2e1d6545ea3a253239d59c05' => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu/functions.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
-        '39594db8502267d6df2fe2dca5f3914d' => __DIR__ . '/..' . '/zzstudio/think-addons/src/helper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -33,15 +30,6 @@ class ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8
             'think\\captcha\\' => 14,
             'think\\app\\' => 10,
             'think\\' => 6,
-        ),
-        's' => 
-        array (
-            'sent\\jwt\\' => 9,
-        ),
-        'r' => 
-        array (
-            'ric\\helper\\' => 11,
-            'ric\\apidoc\\' => 11,
         ),
         'l' => 
         array (
@@ -122,24 +110,10 @@ class ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8
         ),
         'think\\' => 
         array (
-            0 => __DIR__ . '/..' . '/topthink/think-helper/src',
-            1 => __DIR__ . '/..' . '/topthink/think-orm/src',
-            2 => __DIR__ . '/..' . '/topthink/framework/src/think',
-            3 => __DIR__ . '/..' . '/topthink/think-image/src',
-            4 => __DIR__ . '/..' . '/topthink/think-template/src',
-            5 => __DIR__ . '/..' . '/zzstudio/think-addons/src',
-        ),
-        'sent\\jwt\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/sent/think-jwt/src',
-        ),
-        'ric\\helper\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/ric/thinkphp6-helper/src',
-        ),
-        'ric\\apidoc\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/ric/thinkphp6-apidoc/src',
+            0 => __DIR__ . '/..' . '/topthink/framework/src/think',
+            1 => __DIR__ . '/..' . '/topthink/think-helper/src',
+            2 => __DIR__ . '/..' . '/topthink/think-orm/src',
+            3 => __DIR__ . '/..' . '/topthink/think-template/src',
         ),
         'liliuwei\\social\\' => 
         array (
@@ -200,7 +174,6 @@ class ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -259,6 +232,7 @@ class ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
@@ -267,10 +241,10 @@ class ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit6b7af507fa658f5bdc86e035bb87b0c8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd2c0f859a9c43ab05c3776b61b5b192a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd2c0f859a9c43ab05c3776b61b5b192a::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr0 = ComposerStaticInitd2c0f859a9c43ab05c3776b61b5b192a::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInitd2c0f859a9c43ab05c3776b61b5b192a::$classMap;
 
         }, null, ClassLoader::class);
     }

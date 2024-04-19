@@ -44,7 +44,9 @@ class SlackWebhookHandler extends AbstractProcessingHandler
      * @param string|null $iconEmoji              The emoji name to use (or null)
      * @param bool        $useShortAttachment     Whether the the context/extra messages added to Slack as attachments are in a short style
      * @param bool        $includeContextAndExtra Whether the attachment should include context and extra data
-     * @param string[]    $excludeFields          Dot separated list of fields to exclude from slack message. E.g. ['context.field1', 'extra.field2']
+     * @param string|int  $level                  The minimum logging level at which this handler will be triggered
+     * @param bool        $bubble                 Whether the messages that are handled can bubble up the stack or not
+     * @param array       $excludeFields          Dot separated list of fields to exclude from slack message. E.g. ['context.field1', 'extra.field2']
      */
     public function __construct(
         string $webhookUrl,
@@ -58,10 +60,6 @@ class SlackWebhookHandler extends AbstractProcessingHandler
         bool $bubble = true,
         array $excludeFields = array()
     ) {
-        if (!extension_loaded('curl')) {
-            throw new MissingExtensionException('The curl extension is needed to use the SlackWebhookHandler');
-        }
-
         parent::__construct($level, $bubble);
 
         $this->webhookUrl = $webhookUrl;
@@ -88,7 +86,9 @@ class SlackWebhookHandler extends AbstractProcessingHandler
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
+     * @param array $record
      */
     protected function write(array $record): void
     {

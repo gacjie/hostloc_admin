@@ -336,7 +336,7 @@ layui.use(["element", "form", "layer", "okUtils", "okTab", "okLayer", "okContext
     * 退出操作
     */
    $("#logout").click(function () {
-      let url = $(this).attr('data-url')
+      let url = $(this).attr('url')
       okLayer.confirm("确定要退出吗？", function (index) {
          okTab.removeTabStorage(function (res) {
             okTab.removeTabStorage();
@@ -345,6 +345,39 @@ layui.use(["element", "form", "layer", "okUtils", "okTab", "okLayer", "okContext
       });
    });
 
+   /**
+    * 清理缓存
+    */
+   $("#clear").click(function () {
+      let url = $(this).attr('url')
+      okLayer.confirm("确定要清理吗？", function (index) {
+         okTab.removeTabStorage(function (res) {
+            okTab.removeTabStorage();
+            window.location = url;
+         });
+      });
+   });
+   
+   /**
+    * 用户信息
+    */
+   $("#user").click(function () {
+        let url = $(this).attr('url')
+        okLayer.open("账号信息", url, "30%", "45%", null, function () {
+            userTable.reload();
+        })
+   });
+   
+   /**
+    * 修改密码
+    */
+   $("#modify_pass").click(function () {
+        let url = $(this).attr('url')
+        okLayer.open("修改密码", url, "30%", "35%", null, function () {
+            userTable.reload();
+        })
+   });
+   
    /**
     * 锁定账户
     */

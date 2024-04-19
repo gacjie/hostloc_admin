@@ -11,11 +11,17 @@
         'default_timezone' => 'Asia/Shanghai',
     
         // 应用映射（自动多应用模式有效）
-        'app_map'               => ['ztcev7j0' => 'admin'],
+        'app_map'               => [
+                                    //'xsku34tn' => 'admin'
+                                    ],
         // 域名绑定（自动多应用模式有效）
         'domain_bind'      => [],
         // 禁止URL访问的应用列表（自动多应用模式有效）
-        'deny_app_list'    => ['common','admin'],
+        'deny_app_list'    => [
+                                'common',
+                                // 'user',
+                                //'admin'
+                                ],
     
         // 异常页面的模板文件
         'exception_tmpl'   => app()->getThinkPath() . 'tpl/think_exception.tpl',

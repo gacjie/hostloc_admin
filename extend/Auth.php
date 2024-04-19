@@ -26,7 +26,6 @@ class Auth
         'auth_on'           =>  true,                // 认证开关
         'auth_type'         =>  1,                   // 认证方式，1为实时认证；2为登录认证。
         'auth_group'        =>  'auth_group',        // 用户组数据表名
-        'auth_group_access' =>  'auth_group_access', // 用户-用户组关系表
         'auth_rule'         =>  'auth_rule',         // 权限规则表
         'auth_user'         =>  'admin',             // 用户信息表
         'auth_user_id_field'=>  'id',                // 用户表ID字段名
@@ -106,13 +105,14 @@ class Auth
         if (isset($groups[$uid])) {
             return $groups[$uid];
         }
-        $user_groups = Db::name($this->_config['auth_group_access'])
+        $user_groups = Db::name($this->_config['auth_user'])
             ->alias('a')
-            ->where('a.uid', $uid)
+            ->where('a.id', $uid)
             ->where('g.status', "normal")
             ->join($this->_config['auth_group'].' g', "a.group_id = g.id")
-            ->field('uid,group_id,title,rules')
+            ->field('a.id,group_id,title,rules')
             ->select();
+        // var_dump($user_groups);exit();
         $groups[$uid] = $user_groups ?: [];
         return $groups[$uid];
     }

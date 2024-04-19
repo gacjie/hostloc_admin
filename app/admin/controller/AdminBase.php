@@ -6,7 +6,6 @@ use app\BaseController;
 use think\facade\Session;
 use think\facade\View;
 use think\facade\Request;
-use app\admin\service\SystemLogService;
 class AdminBase extends BaseController
 {
     /**
@@ -98,21 +97,6 @@ class AdminBase extends BaseController
             $route = "addons/".$addon."/".Request::controller() . '/' . lcfirst(Request::action());
         } else {
             $route = app('http')->getName()."/".Request::controller() . '/' . lcfirst(Request::action());
-        }
-
-        if(Request::controller()){
-            $url = Request::url();
-            $ip = $this->getRealIp();
-            $params = Request::param();
-            $data = [
-                'admin_id'    => session('admin.id'),
-                'url'         => $url,
-                'method'      => Request::method(),
-                'ip'          => $ip,
-                'content'     => json_encode($params, JSON_UNESCAPED_UNICODE),
-                'useragent'   => $_SERVER['HTTP_USER_AGENT'],
-                'create_time' => time(),
-            ];
         }
         //var_dump($route);exit();
         $flag = false;

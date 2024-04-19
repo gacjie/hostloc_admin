@@ -51,7 +51,7 @@ class MongoDbSessionHandler extends AbstractSessionHandler
      * A TTL collections can be used on MongoDB 2.2+ to cleanup expired sessions
      * automatically. Such an index can for example look like this:
      *
-     *     db.<session-collection>.createIndex(
+     *     db.<session-collection>.ensureIndex(
      *         { "<expiry-field>": 1 },
      *         { "expireAfterSeconds": 0 }
      *     )
@@ -100,14 +100,15 @@ class MongoDbSessionHandler extends AbstractSessionHandler
     }
 
     /**
-     * @return int|false
+     * @return bool
      */
-    #[\ReturnTypeWillChange]
     public function gc($maxlifetime)
     {
-        return $this->getCollection()->deleteMany([
+        $this->getCollection()->deleteMany([
             $this->options['expiry_field'] => ['$lt' => new \MongoDB\BSON\UTCDateTime()],
-        ])->getDeletedCount();
+        ]);
+
+        return true;
     }
 
     /**

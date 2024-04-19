@@ -1,8 +1,6 @@
 <?php
 namespace Qiniu\Tests;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Version;
-use Qiniu\Region;
 use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\UploadManager;
 use Qiniu\Config;
@@ -28,20 +26,9 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $upManager = new UploadManager();
         $token = $this->auth->uploadToken($this->bucketName, $key);
         $tempFile = qiniuTempFile(4 * 1024 * 1024 + 10);
-        $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
-        $this->assertNotFalse($resumeFile);
-        list($ret, $error) = $upManager->putFile(
-            $token,
-            $key,
-            $tempFile,
-            null,
-            'application/octet-stream',
-            false,
-            $resumeFile
-        );
+        list($ret, $error) = $upManager->putFile($token, $key, $tempFile);
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
-        unlink($resumeFile);
         unlink($tempFile);
     }
 
@@ -53,20 +40,9 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $upManager = new UploadManager($cfg);
         $token = $this->auth->uploadToken($this->bucketName, $key);
         $tempFile = qiniuTempFile(4 * 1024 * 1024 + 10);
-        $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
-        $this->assertNotFalse($resumeFile);
-        list($ret, $error) = $upManager->putFile(
-            $token,
-            $key,
-            $tempFile,
-            null,
-            'application/octet-stream',
-            false,
-            $resumeFile
-        );
+        list($ret, $error) = $upManager->putFile($token, $key, $tempFile);
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
-        unlink($resumeFile);
         unlink($tempFile);
     }
 
@@ -81,41 +57,4 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
     //     $this->assertNotNull($ret['hash']);
     //     unlink($tempFile);
     // }
-
-    public function testResumeUploadV2()
-    {
-        $key = 'resumePutFile4ML';
-        $zone = new Zone(array('up.qiniup.com'));
-        $cfg = new Config($zone);
-        $upManager = new UploadManager($cfg);
-        $token = $this->auth->uploadToken($this->bucketName, $key);
-        $testFileSize = array(
-            config::BLOCK_SIZE / 2,
-            config::BLOCK_SIZE,
-            config::BLOCK_SIZE + 10,
-            config::BLOCK_SIZE * 2,
-            config::BLOCK_SIZE * 2.5
-        );
-        $partSize = 5 * 1024 * 1024;
-        foreach ($testFileSize as $item) {
-            $tempFile = qiniuTempFile($item);
-            $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
-            $this->assertNotFalse($resumeFile);
-            list($ret, $error) = $upManager->putFile(
-                $token,
-                $key,
-                $tempFile,
-                null,
-                'application/octet-stream',
-                false,
-                $resumeFile,
-                'v2',
-                $partSize
-            );
-            $this->assertNull($error);
-            $this->assertNotNull($ret['hash']);
-            unlink($resumeFile);
-            unlink($tempFile);
-        }
-    }
 }

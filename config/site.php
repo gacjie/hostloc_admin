@@ -1,13 +1,9 @@
 <?php
 
 return array (
-  'name' => 'HostLoc账号管理器',
-  'beian' => '',
-  'cdnurl' => '',
-  'version' => '1.0.1',
-  'hash' => '',
+  'name' => 'Hostloc账号管理器',
+  'version' => 'Build 240419',
   'timezone' => 'Asia/Shanghai',
-  'forbiddenip' => '',
   'languages' => 
   array (
     'backend' => 'zh-cn',
@@ -24,9 +20,9 @@ return array (
   array (
     'basic' => '基本配置',
   ),
-  'hostloc' => 'https://hostloc.com',
-  'sleep' => '10',
-  'limit' => '1',
-  'Interval' => '86400',
-  'userid' => '0,50000',
+  0 => '',
+  1 => '',
+  'bbs_url' => 'https://hostloc.com',
+  'userid' => '1,72000',
+  'hour' => '6',
 );

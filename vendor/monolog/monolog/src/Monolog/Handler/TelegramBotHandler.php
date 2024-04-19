@@ -27,20 +27,18 @@ use Monolog\Logger;
  * @link https://core.telegram.org/bots/api
  *
  * @author Mazur Alexandr <alexandrmazur96@gmail.com>
- *
- * @phpstan-import-type Record from \Monolog\Logger
  */
 class TelegramBotHandler extends AbstractProcessingHandler
 {
     private const BOT_API = 'https://api.telegram.org/bot';
 
     /**
-     * The available values of parseMode according to the Telegram api documentation
+     * @var array AVAILABLE_PARSE_MODES The available values of parseMode according to the Telegram api documentation
      */
     private const AVAILABLE_PARSE_MODES = [
         'HTML',
         'MarkdownV2',
-        'Markdown', // legacy mode without underline and strikethrough, use MarkdownV2 instead
+        'Markdown' // legacy mode without underline and strikethrough, use MarkdownV2 instead
     ];
 
     /**
@@ -61,25 +59,26 @@ class TelegramBotHandler extends AbstractProcessingHandler
      * The kind of formatting that is used for the message.
      * See available options at https://core.telegram.org/bots/api#formatting-options
      * or in AVAILABLE_PARSE_MODES
-     * @var ?string
+     * @var string|null
      */
     private $parseMode;
 
     /**
      * Disables link previews for links in the message.
-     * @var ?bool
+     * @var bool|null
      */
     private $disableWebPagePreview;
 
     /**
      * Sends the message silently. Users will receive a notification with no sound.
-     * @var ?bool
+     * @var bool|null
      */
     private $disableNotification;
 
     /**
      * @param string $apiKey  Telegram bot access token provided by BotFather
      * @param string $channel Telegram channel name
+     * @inheritDoc
      */
     public function __construct(
         string $apiKey,
@@ -90,10 +89,6 @@ class TelegramBotHandler extends AbstractProcessingHandler
         bool $disableWebPagePreview = null,
         bool $disableNotification = null
     ) {
-        if (!extension_loaded('curl')) {
-            throw new MissingExtensionException('The curl extension is needed to use the TelegramBotHandler');
-        }
-
         parent::__construct($level, $bubble);
 
         $this->apiKey = $apiKey;
@@ -110,30 +105,26 @@ class TelegramBotHandler extends AbstractProcessingHandler
         }
 
         $this->parseMode = $parseMode;
-
         return $this;
     }
 
     public function disableWebPagePreview(bool $disableWebPagePreview = null): self
     {
         $this->disableWebPagePreview = $disableWebPagePreview;
-
         return $this;
     }
 
     public function disableNotification(bool $disableNotification = null): self
     {
         $this->disableNotification = $disableNotification;
-
         return $this;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function handleBatch(array $records): void
     {
-        /** @var Record[] $messages */
         $messages = [];
 
         foreach ($records as $record) {
@@ -142,7 +133,6 @@ class TelegramBotHandler extends AbstractProcessingHandler
             }
 
             if ($this->processors) {
-                /** @var Record $record */
                 $record = $this->processRecord($record);
             }
 
@@ -182,9 +172,6 @@ class TelegramBotHandler extends AbstractProcessingHandler
         ]));
 
         $result = Curl\Util::execute($ch);
-        if (!is_string($result)) {
-            throw new RuntimeException('Telegram API error. Description: No response');
-        }
         $result = json_decode($result, true);
 
         if ($result['ok'] === false) {

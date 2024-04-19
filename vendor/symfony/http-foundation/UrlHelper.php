@@ -31,11 +31,11 @@ final class UrlHelper
 
     public function getAbsoluteUrl(string $path): string
     {
-        if (str_contains($path, '://') || '//' === substr($path, 0, 2)) {
+        if (false !== strpos($path, '://') || '//' === substr($path, 0, 2)) {
             return $path;
         }
 
-        if (null === $request = $this->requestStack->getMainRequest()) {
+        if (null === $request = $this->requestStack->getMasterRequest()) {
             return $this->getAbsoluteUrlFromContext($path);
         }
 
@@ -60,11 +60,11 @@ final class UrlHelper
 
     public function getRelativePath(string $path): string
     {
-        if (str_contains($path, '://') || '//' === substr($path, 0, 2)) {
+        if (false !== strpos($path, '://') || '//' === substr($path, 0, 2)) {
             return $path;
         }
 
-        if (null === $request = $this->requestStack->getMainRequest()) {
+        if (null === $request = $this->requestStack->getMasterRequest()) {
             return $path;
         }
 

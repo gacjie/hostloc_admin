@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>修改密码</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="/static/css/oksub.css">
+	<script type="text/javascript" src="/static/lib/loading/okLoading.js"></script>
+	<style>
+		.layui-upload-list img{
+			height:100px;
+			width:100px;
+		}
+	</style>
+</head>
+<body>
+<div class="ok-body">
+	<!--form表单-->
+	<form class="layui-form layui-form-pane ok-form" action="" method="post">
+		
+		 
+		<div class="layui-form-item">
+		    <input type="hidden" name="id" value="{$userinfo.id}">
+			<label class="layui-form-label">新密码</label>
+			<div class="layui-input-block">
+				<input type="password" name="password" placeholder="请输入新密码" autocomplete="off" class="layui-input"
+				       lay-verify="text" value="">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">验证密码</label>
+			<div class="layui-input-block">
+				<input type="password" name="password2" placeholder="请再次输入新密码" autocomplete="off" class="layui-input"
+				       lay-verify="text" value="">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">旧密码</label>
+			<div class="layui-input-block">
+				<input type="password" name="oldpassword" placeholder="请输入旧密码" autocomplete="off" class="layui-input"
+				       lay-verify="text" value="">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" type="submit" lay-submit lay-filter="demo2">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+</div>
+<!--js逻辑-->
+<script src="/static/lib/layui/layui.js"></script>
+<script>
+	
+	
+	
+	layui.use(["element", "form", "laydate", "okLayer", "okUtils"], function () {
+		let form = layui.form;
+		let laydate = layui.laydate;
+		let okLayer = layui.okLayer;
+		let okUtils = layui.okUtils;
+
+		okLoading.close();
+
+		//laydate.render({elem: "#birthday", type: "datetime"});
+
+		form.verify({
+			
+		});
+
+		form.on("submit(add)", function (data) {
+			okUtils.ajax("{:url('edit')}", "post", data.field, true).done(function (response) {
+				//console.log(response);
+
+				
+			}).fail(function (error) {
+				console.log(error)
+			});
+			return false;
+		});
+	});
+</script>
+
+
+<script>
+layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  
+  //普通图片上传
+  var uploadInst = upload.render({
+    elem: '#test1'
+    ,url: '{:url("admin/upload/index")}' //改成您自己的上传接口
+    ,before: function(obj){
+      //预读本地文件示例，不支持ie8
+      obj.preview(function(index, file, result){
+        $('#demo1').attr('src', result); //图片链接（base64）
+      });
+    }
+    ,done: function(res){
+      //如果上传失败
+      if(res.code > 0){
+        return layer.msg('上传失败');
+      }
+	  console.log(res);
+      //上传成功
+	  $('input[name=avatar]').val(res.path);
+    }
+    ,error: function(){
+      //演示失败状态，并实现重传
+      var demoText = $('#demoText');
+      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+      demoText.find('.demo-reload').on('click', function(){
+        uploadInst.upload();
+      });
+    }
+  });
+
+  
+});
+</script>
+</body>
+</html>

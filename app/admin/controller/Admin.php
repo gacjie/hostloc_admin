@@ -23,9 +23,7 @@ class Admin extends AdminBase
         $limit = $this->request->param('limit', 10, 'intval');
         $count = Db::name('admin')->count();
         $data = Db::name('admin')
-        ->alias('as a')
-        ->join('auth_group_access c', 'a.id = c.uid', 'left')
-        ->field('a.id,a.username,a.nickname,a.avatar,a.email,a.status,a.createtime,c.group_id')
+        ->field('id,username,nickname,avatar,email,status,createtime,group_id')
         ->page($page, $limit)->select()->each(function ($item, $k) use ($authgroup) {
             $item['createtime_text'] = date('Y-m-d H:i', $item['createtime']);
             $item['authgroup'] = key_exists($item['group_id'], $authgroup)?$authgroup[$item['group_id']]:'';
@@ -54,9 +52,6 @@ class Admin extends AdminBase
             // 单独校验并去除角色组
             if (empty($data['group_id'])) {
                 $this->error('请选择角色组');
-            } else {
-                $groupId = $data['group_id'];
-                unset($data['group_id']);
             }
             
             unset($data['file']);
@@ -67,10 +62,6 @@ class Admin extends AdminBase
             $data['password'] = md5(md5($data['password']).$data['salt']);
             $result = \app\common\model\Admin::create($data);
             if ($result!==false) {
-                \app\common\model\AuthGroupAccess::create([
-                        'uid'      =>  $result->id,
-                        'group_id' =>  $groupId
-                ]);
                 $this->success("添加成功");
             } else {
                 $this->error("添加失败");
@@ -94,13 +85,9 @@ class Admin extends AdminBase
             if (!$data['group_id']) {
                 $this->error('请选择角色组!');
             }
-            $group_id = $data['group_id'];
-            unset($data['group_id']);
-            
             
             unset($data['file']);
             $data['status'] = (isset($data['status'])&&$data['status']==1)?'normal':'stop';
-            
             $data['updatetime'] = time();
             if ($data['avatar']) {
                 $data['avatar'] = ("/storage/".$data['avatar']);
@@ -117,20 +104,6 @@ class Admin extends AdminBase
                 unset($data['password']);
             }
             if (Db::name('admin')->where('id', $data['id'])->update($data)!==false) {
-                $oldgroupId = \app\common\model\AuthGroupAccess::where('uid', $data['id'])
-                ->value('group_id');
-                if ($oldgroupId) {
-                    \app\common\model\AuthGroupAccess::update([
-                            'group_id' =>  $group_id
-                            ], ['uid'=>$data['id']]);
-                } else {
-                    \app\common\model\AuthGroupAccess::create([
-                            'uid'      =>  $data['id'],
-                            'group_id' =>  $group_id
-                            ]);
-                }
-                
-                
                 $this->success("编辑成功");
             } else {
                 $this->error("编辑失败");
@@ -144,10 +117,6 @@ class Admin extends AdminBase
         if (!$admininfo) {
             $this->error("参数错误");
         }
-        // 获取当前管理员的分组
-        $groupId = \app\common\model\AuthGroupAccess::where('uid', $admininfo['id'])
-        ->value('group_id');
-        View::assign('groupId', $groupId);
         View::assign('admininfo', $admininfo);
         View::assign('authgroup', $this->getAuthGroupOptions());
         return View::fetch();

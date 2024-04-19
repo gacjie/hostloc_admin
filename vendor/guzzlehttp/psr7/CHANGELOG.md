@@ -1,38 +1,49 @@
 # Change Log
 
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## Unreleased
 
-## 2.0.0 - 2021-06-30
+## 1.9.1 - 2023-04-17
 
-Identical to the RC release.
+### Fixed
 
-## 2.0.0@RC-1 - 2021-04-29
+- Fixed header validation issue
+
+## 1.9.0 - 2022-06-20
+
+### Added
+
+- Added `UriComparator::isCrossOrigin` method
+
+## 1.8.5 - 2022-03-20
+
+### Fixed
+
+- Correct header value validation
+
+## 1.8.4 - 2022-03-20
+
+### Fixed
+
+- Validate header values properly
+
+## 1.8.3 - 2021-10-05
+
+### Fixed
+
+- Return `null` in caching stream size if remote size is `null`
+
+## 1.8.2 - 2021-04-26
 
 ### Fixed
 
 - Handle possibly unset `url` in `stream_get_meta_data`
-
-## 2.0.0@beta-1 - 2021-03-21
-
-### Added
-
-- PSR-17 factories
-- Made classes final
-- PHP7 type hints
-
-### Changed
-
-- When building a query string, booleans are represented as 1 and 0.
-
-### Removed
-
-- PHP < 7.2 support
-- All functions in the Guzzle\Psr7 namespace
 
 ## 1.8.1 - 2021-03-21
 

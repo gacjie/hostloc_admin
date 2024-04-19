@@ -49,13 +49,15 @@ class ElasticsearchHandler extends AbstractProcessingHandler
     protected $client;
 
     /**
-     * @var mixed[] Handler config options
+     * @var array Handler config options
      */
     protected $options = [];
 
     /**
-     * @param Client  $client  Elasticsearch Client object
-     * @param mixed[] $options Handler configuration
+     * @param Client     $client  Elasticsearch Client object
+     * @param array      $options Handler configuration
+     * @param string|int $level   The minimum logging level at which this handler will be triggered
+     * @param bool       $bubble  Whether the messages that are handled can bubble up the stack or not
      */
     public function __construct(Client $client, array $options = [], $level = Logger::DEBUG, bool $bubble = true)
     {
@@ -80,7 +82,7 @@ class ElasticsearchHandler extends AbstractProcessingHandler
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setFormatter(FormatterInterface $formatter): HandlerInterface
     {
@@ -94,7 +96,7 @@ class ElasticsearchHandler extends AbstractProcessingHandler
     /**
      * Getter options
      *
-     * @return mixed[]
+     * @return array
      */
     public function getOptions(): array
     {
@@ -110,7 +112,7 @@ class ElasticsearchHandler extends AbstractProcessingHandler
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function handleBatch(array $records): void
     {
@@ -121,7 +123,7 @@ class ElasticsearchHandler extends AbstractProcessingHandler
     /**
      * Use Elasticsearch bulk API to send list of documents
      *
-     * @param  array[]           $records Records + _index/_type keys
+     * @param  array             $records
      * @throws \RuntimeException
      */
     protected function bulkSend(array $records): void
@@ -160,7 +162,7 @@ class ElasticsearchHandler extends AbstractProcessingHandler
      *
      * Only the first error is converted into an exception.
      *
-     * @param mixed[] $responses returned by $this->client->bulk()
+     * @param array $responses returned by $this->client->bulk()
      */
     protected function createExceptionFromResponses(array $responses): ElasticsearchRuntimeException
     {
@@ -176,7 +178,7 @@ class ElasticsearchHandler extends AbstractProcessingHandler
     /**
      * Creates elasticsearch exception from error array
      *
-     * @param mixed[] $error
+     * @param array $error
      */
     protected function createExceptionFromError(array $error): ElasticsearchRuntimeException
     {

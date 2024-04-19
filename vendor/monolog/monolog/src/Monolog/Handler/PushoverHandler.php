@@ -13,44 +13,30 @@ namespace Monolog\Handler;
 
 use Monolog\Logger;
 use Monolog\Utils;
-use Psr\Log\LogLevel;
 
 /**
  * Sends notifications through the pushover api to mobile phones
  *
  * @author Sebastian Göttschkes <sebastian.goettschkes@googlemail.com>
  * @see    https://www.pushover.net/api
- *
- * @phpstan-import-type FormattedRecord from AbstractProcessingHandler
- * @phpstan-import-type Level from \Monolog\Logger
- * @phpstan-import-type LevelName from \Monolog\Logger
  */
 class PushoverHandler extends SocketHandler
 {
-    /** @var string */
     private $token;
-    /** @var array<int|string> */
     private $users;
-    /** @var string */
     private $title;
-    /** @var string|int|null */
-    private $user = null;
-    /** @var int */
+    private $user;
     private $retry;
-    /** @var int */
     private $expire;
 
-    /** @var int */
     private $highPriorityLevel;
-    /** @var int */
     private $emergencyLevel;
-    /** @var bool */
     private $useFormattedMessage = false;
 
     /**
      * All parameters that can be sent to Pushover
      * @see https://pushover.net/api
-     * @var array<string, bool>
+     * @var array
      */
     private $parameterNames = [
         'token' => true,
@@ -71,7 +57,7 @@ class PushoverHandler extends SocketHandler
     /**
      * Sounds the api supports by default
      * @see https://pushover.net/api#sounds
-     * @var string[]
+     * @var array
      */
     private $sounds = [
         'pushover', 'bike', 'bugle', 'cashregister', 'classical', 'cosmic', 'falling', 'gamelan', 'incoming',
@@ -83,6 +69,8 @@ class PushoverHandler extends SocketHandler
      * @param string       $token             Pushover api token
      * @param string|array $users             Pushover user id or array of ids the message will be sent to
      * @param string|null  $title             Title sent to the Pushover API
+     * @param string|int   $level             The minimum logging level at which this handler will be triggered
+     * @param bool         $bubble            Whether the messages that are handled can bubble up the stack or not
      * @param bool         $useSSL            Whether to connect via SSL. Required when pushing messages to users that are not
      *                                        the pushover.net app owner. OpenSSL is required for this option.
      * @param string|int   $highPriorityLevel The minimum logging level at which this handler will start
@@ -93,10 +81,6 @@ class PushoverHandler extends SocketHandler
      *                                        send the same notification to the user.
      * @param int          $expire            The expire parameter specifies how many seconds your notification will continue
      *                                        to be retried for (every retry seconds).
-     *
-     * @phpstan-param string|array<int|string>    $users
-     * @phpstan-param Level|LevelName|LogLevel::* $highPriorityLevel
-     * @phpstan-param Level|LevelName|LogLevel::* $emergencyLevel
      */
     public function __construct(
         string $token,
@@ -115,7 +99,7 @@ class PushoverHandler extends SocketHandler
 
         $this->token = $token;
         $this->users = (array) $users;
-        $this->title = $title ?: (string) gethostname();
+        $this->title = $title ?: gethostname();
         $this->highPriorityLevel = Logger::toMonologLevel($highPriorityLevel);
         $this->emergencyLevel = Logger::toMonologLevel($emergencyLevel);
         $this->retry = $retry;
@@ -129,9 +113,6 @@ class PushoverHandler extends SocketHandler
         return $this->buildHeader($content) . $content;
     }
 
-    /**
-     * @phpstan-param FormattedRecord $record
-     */
     private function buildContent(array $record): string
     {
         // Pushover has a limit of 512 characters on title and message combined.
@@ -196,11 +177,6 @@ class PushoverHandler extends SocketHandler
         $this->user = null;
     }
 
-    /**
-     * @param int|string $value
-     *
-     * @phpstan-param Level|LevelName|LogLevel::* $value
-     */
     public function setHighPriorityLevel($value): self
     {
         $this->highPriorityLevel = Logger::toMonologLevel($value);
@@ -208,11 +184,6 @@ class PushoverHandler extends SocketHandler
         return $this;
     }
 
-    /**
-     * @param int|string $value
-     *
-     * @phpstan-param Level|LevelName|LogLevel::* $value
-     */
     public function setEmergencyLevel($value): self
     {
         $this->emergencyLevel = Logger::toMonologLevel($value);

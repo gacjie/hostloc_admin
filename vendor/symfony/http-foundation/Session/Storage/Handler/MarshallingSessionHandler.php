@@ -28,54 +28,48 @@ class MarshallingSessionHandler implements \SessionHandlerInterface, \SessionUpd
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
     public function open($savePath, $name)
     {
         return $this->handler->open($savePath, $name);
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
     public function close()
     {
         return $this->handler->close();
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
     public function destroy($sessionId)
     {
         return $this->handler->destroy($sessionId);
     }
 
     /**
-     * @return int|false
+     * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
     public function gc($maxlifetime)
     {
         return $this->handler->gc($maxlifetime);
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
     public function read($sessionId)
     {
         return $this->marshaller->unmarshall($this->handler->read($sessionId));
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
     public function write($sessionId, $data)
     {
         $failed = [];
@@ -89,18 +83,16 @@ class MarshallingSessionHandler implements \SessionHandlerInterface, \SessionUpd
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
     public function validateId($sessionId)
     {
         return $this->handler->validateId($sessionId);
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    #[\ReturnTypeWillChange]
     public function updateTimestamp($sessionId, $data)
     {
         return $this->handler->updateTimestamp($sessionId, $data);

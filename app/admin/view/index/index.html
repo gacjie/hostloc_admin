@@ -20,22 +20,26 @@
                <i class="layui-icon layui-icon-shrink-right"></i>
             </a>
          </li>
-         <!--天气信息-->
-         <!--
-      <li class="ok-nav-item ok-hide-md">
-          <div class="weather-ok">
-              <iframe frameborder="0" scrolling="no" class="iframe-style" src="pages/weather.html" frameborder="0"></iframe>
-          </div>
-      </li>
-       -->
+
       </ul>
       <ul class="layui-nav layui-layout-right">
          <li class="layui-nav-item ok-input-search">
             <input type="text" placeholder="{:__('Search')}" class="layui-input layui-input-search" />
          </li>
          <li class="layui-nav-item">
-            <a class="ok-refresh" href="javascript:" title="{:__('Refresh')}">
+            <a class="ok-refresh pr10 pl10" href="/" title="主页" target="_blank">
+               <i class="layui-icon layui-icon-home"></i>
+            </a>
+         </li>
+         <li class="layui-nav-item">
+            <a class="ok-refresh pr10 pl10" href="javascript:" title="{:__('Refresh')}">
                <i class="layui-icon layui-icon-refresh-3"></i>
+            </a>
+         </li>
+         <!-- 全屏 -->
+         <li class="layui-nav-item layui-hide-xs">
+            <a id="fullScreen" class="pr10 pl10" href="javascript:;">
+               <i class="layui-icon layui-icon-screen-full"></i>
             </a>
          </li>
          <li class="no-line layui-nav-item layui-hide-xs">
@@ -46,19 +50,16 @@
             </a>
          </li>
 
-         <!-- <li class="no-line layui-nav-item layui-hide-xs">
-         <a id="lock" class="flex-vc pr10 pl10" href="javascript:">
-            <i class="ok-icon ok-icon-lock icon-head-i" title="{:__('Lock screen')}"></i><cite></cite>
-         </a>
-      </li> -->
 
-         <!-- 全屏 -->
-         <li class="layui-nav-item layui-hide-xs">
-            <a id="fullScreen" class=" pr10 pl10" href="javascript:;">
-               <i class="layui-icon layui-icon-screen-full"></i>
-            </a>
-         </li>
-
+         <!--<li class="layui-nav-item">-->
+         <!--   <a class="pr20 pl10" href="javascript:;">-->
+         <!--      <i class="layui-icon layui-icon-website"></i>-->
+         <!--   </a>-->
+            
+         <!--   <dl class="layui-nav-child">-->
+         <!--       <dd><a lay-id="u-1">简体中文</a></dd>-->
+         <!--   </dl>-->
+         <!--</li>-->
          <li class="no-line layui-nav-item">
             <a href="javascript:">
                <img src="{$admininfo.avatar}" class="layui-nav-img">
@@ -73,16 +74,14 @@
             <dd>
                <hr/>
             </dd> -->
-               <dd><a href="javascript:void(0)" id="logout" data-url="{:url('login/logout')}">{:__('Logout')}</a></dd>
+                <dd><a lay-id="u-1">{$site.version}</a></dd>
+                <dd><a href="javascript:" id="user" url="/admin/index/user">账号信息</a></dd>
+                <dd><a href="javascript:" id="modify_pass" url="/admin/index/modify_pass">修改密码</a></dd>
+                <dd><a href="javascript:" id="clear" url="/admin/index/clear">清理缓存</a></dd>
+                <dd><a href="javascript:" id="logout" url="/admin/index/logout">{:__('Logout')}</a></dd>
             </dl>
          </li>
 
-         <!-- 菜单 -->
-         <!-- <li class="layui-nav-item layui-hide-xs">
-         <a id="okSetting" class="pr10 pl10" href="javascript:;">
-            <i style="font-size: 18px" class="ok-icon ok-icon-moreandroid"></i>
-         </a>
-      </li> -->
       </ul>
    </div>
    <!--遮罩层-->
@@ -160,13 +159,13 @@
          <ul id="tabTitle" class="layui-tab-title ok-tab-title not-scroll">
             <li class="layui-this" lay-id="1" tab="index">
                <i class="ok-icon">&#xe654;</i>
-               <cite is-close=false>账号管理</cite>
+               <cite is-close=false>控制台</cite>
             </li>
          </ul>
 
          <div id="tabContent" class="layui-tab-content ok-tab-content">
             <div class="layui-tab-item layui-show">
-               <iframe src='{:url("hostloc/index")}' frameborder="0" scrolling="yes" width="100%" height="100%"></iframe>
+               <iframe src='{:url("welcome")}' frameborder="0" scrolling="yes" width="100%" height="100%"></iframe>
             </div>
          </div>
       </div>
@@ -174,64 +173,11 @@
 
    <!--底部信息-->
    <div class="layui-footer okadmin-text-center">
-      Copyright ©2018-©2021 {$site.name} All Rights Reserved
-   </div>
-</div>
-
-<!-- 锁屏 -->
-<div class="lock-screen">
-   <div class="lock-bg">
-
-      <img class="lock-gradual" src="/static/images/wallpaper/9f28afe0e71b3ba8778e307bea2f006d.jpg" alt="" />
-      <img class="lock-gradual" src="/static/images/wallpaper/29bce2d5cf30fc96866dcb5e287661ea.jpg" alt="" />
-      <img class="lock-gradual" src="/static/images/wallpaper/b4b55f8ec6b2763a737a2d6e1c50b71e.jpg" alt="" />
-      <img class="lock-gradual" src="/static/images/wallpaper/b8df65c6452dcf8b0302b8bfce9e7ec9.jpg" alt="" />
-      <img class="lock-gradual" src="/static/images/wallpaper/b390e4c33b7d656f09dc7fd155759a4f.jpg" alt="" />
-      <img class="lock-gradual" src="/static/images/wallpaper/3fded2e777723f145a4773dfdb68a9e3.jpg" alt="" />
-   </div>
-   <div class="lock-content">
-      <!--雪花-->
-      <div class="snowflake">
-         <canvas id="snowflake"></canvas>
-      </div>
-      <!--雪花 END-->
-      <div class="time">
-         <div>
-            <div class="hhmmss"></div>
-            <div class="yyyymmdd"></div>
-         </div>
-      </div>
-      <div class="quit" id="lockQuit">
-         <i class="layui-icon layui-icon-logout" title="{:__('Logout')}"></i>
-      </div>
-      <table class="unlock">
-         <tr>
-            <td>
-               <div class="layui-form lock-form">
-                  <div class="lock-head">
-                     <img src="{$admininfo.avatar}" alt="avatar.png" />
-                  </div>
-                  <div class="layui-form-item">
-                     <div class="layui-col-xs8 layui-col-sm8 layui-col-md8">
-                        <input type="password" required lay-verify="required" id="lockPassword" name="lock_password"
-                           style="border-radius: 0;border:0;height: 44px"
-                           placeholder="{:__('Default password',['password'=>'123456'])}" autocomplete="off"
-                           class="layui-input" />
-                     </div>
-                     <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
-                        <button style="width: 100%;box-sizing:border-box;border-radius: 0;" type="button" lay-submit
-                           lay-filter="lockSubmit"
-                           class="layui-btn lock-btn layui-btn-lg layui-btn-normal">{:__('OK')}</button>
-                     </div>
-                  </div>
-               </div>
-            </td>
-         </tr>
-      </table>
+      Copyright ©2018-©2023 {$site.name} All Rights Reserved
    </div>
 </div>
 {/block}
 {block name="scripts"}
-<script src="/static/js/snowflake.js?snowflake=雪花"></script>
+<!--<script src="/static/js/snowflake.js?snowflake=雪花"></script>-->
 <script src="/static/js/okadmin.js"></script>
 {/block}

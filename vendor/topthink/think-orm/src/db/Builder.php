@@ -15,6 +15,7 @@ namespace think\db;
 use Closure;
 use PDO;
 use think\db\exception\DbException as Exception;
+use function count;
 
 /**
  * Db Builder
@@ -136,7 +137,7 @@ abstract class Builder
         }
 
         if (empty($fields)) {
-            if (empty($options['field']) || '*' == $options['field']) {
+            if ('*' == $options['field']) {
                 $fields = array_keys($bind);
             } else {
                 $fields = $options['field'];
@@ -757,7 +758,7 @@ abstract class Builder
         } else {
             $value = array_unique(is_array($value) ? $value : explode(',', $value));
             if (count($value) === 0) {
-                return 'IN' == $exp ? '0 = 1' : '1 = 1';
+                return '0 = 1';
             }
             $array = [];
 
@@ -769,7 +770,7 @@ abstract class Builder
             if (count($array) == 1) {
                 return $key . ('IN' == $exp ? ' = ' : ' <> ') . $array[0];
             } else {
-                $value = implode(',', $array);
+                $value  = implode(',', $array);
             }
         }
 
@@ -969,8 +970,8 @@ abstract class Builder
         $sort = in_array($sort, ['ASC', 'DESC'], true) ? ' ' . $sort : '';
         $bind = $query->getFieldsBindType();
 
-        foreach ($val as $k => $item) {
-            $val[$k] = $this->parseDataBind($query, $key, $item, $bind);
+        foreach ($val as $item) {
+            $val[] = $this->parseDataBind($query, $key, $item, $bind);
         }
 
         return 'field(' . $this->parseKey($query, $key, true) . ',' . implode(',', $val) . ')' . $sort;
@@ -1125,7 +1126,7 @@ abstract class Builder
                 $this->parseTable($query, $options['table']),
                 $this->parseDistinct($query, $options['distinct']),
                 $this->parseExtra($query, $options['extra']),
-                $this->parseField($query, $options['field'] ?? '*'),
+                $this->parseField($query, $options['field']),
                 $this->parseJoin($query, $options['join']),
                 $this->parseWhere($query, $options['where']),
                 $this->parseGroup($query, $options['group']),
@@ -1187,7 +1188,7 @@ abstract class Builder
         $bind = $query->getFieldsBindType();
 
         // 获取合法的字段
-        if (empty($options['field']) || '*' == $options['field']) {
+        if ('*' == $options['field']) {
             $allowFields = array_keys($bind);
         } else {
             $allowFields = $options['field'];

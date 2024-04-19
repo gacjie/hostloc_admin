@@ -36,7 +36,7 @@
             <div class="layui-input-block">
                 <select name="group_id">
                     {volist name='authgroup' id='title'}
-                    <option value="{$key}" {if condition="$key eq $groupId" }selected{/if}>{$title}</option>
+                    <option value="{$key}" {if condition="$key eq $admininfo.group_id" }selected{/if}>{$title}</option>
                     {/volist}
                 </select>
             </div>
