@@ -16,6 +16,10 @@
 https://github.com/gacjie/hostloc_admin   
 https://gitee.com/gacjie/hostloc_admin    
    
+[【宝塔】送你10850元礼包](https://www.bt.cn/?invite_code=M19yaHFycXY=)    
+[【腾讯云】云产品1折特惠专区](https://curl.qcloud.com/zASK1SLm)     
+[【阿里云】云产品爆款特惠](https://www.aliyun.com/minisite/goods?userCode=zqpad1gj)    
+   
 ##### 更新说明：2024/4/19     
 代码整体重构版本    
 减少部分功能设置      
